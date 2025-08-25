@@ -220,16 +220,7 @@ button:active {
   color: white !important;
 }
 
-#run {
-  background: #8A63D2 !important;
-  color: white !important;
-  border: 1px solid var(--md-sys-color-outline) !important;
-}
 
-#run:hover {
-  background: #8A63D2 !important;
-  color: white !important;
-}
 
 #clearOutput {
   background: rgba(255, 107, 107, 0.2);
@@ -418,7 +409,6 @@ button:active {
         <textarea id="instruction" placeholder="Describe your change..." rows="4"></textarea>
         <div class="controls-row">
           <button id="apply">Apply</button>
-          <button id="run">Run</button>
           <button id="copy">Copy</button>
         </div>
       </div>
@@ -441,26 +431,24 @@ button:active {
     </div>
   </div>
 
-  <!-- TOAST NOTIFICATION -->
+  <!-- Toast Notification -->
   <div id="toast" class="toast"></div>
-
+  
+  <!-- Preview Modal -->
+  <div id="previewModal" class="preview-modal" style="display: none;">
+    <div class="preview-content">
+      <h3>Preview Changes</h3>
+      <pre id="previewCode" style="white-space: pre-wrap; font-family: 'Fira Code', monospace; background: #1e1e2f; padding: 16px; border-radius: 4px; max-height: 60vh; overflow-y: auto;"></pre>
+      <div class="preview-actions" style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 16px;">
+        <button id="applyPreview" style="background: #8A63D2; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Apply Changes</button>
+        <button id="addToBottom" style="background: #4CAF50; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Add to Bottom</button>
+        <button id="cancelPreview" style="background: #f44336; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Cancel</button>
+      </div>
+    </div>
+  </div>
 
 <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.41.0/min/vs/loader.js"></script>
 <script src="https://js.puter.com/v2/"></script>
-<!-- Preview Modal -->
-<div id="previewModal" class="preview-modal">
-  <div class="preview-content">
-    <h3>Preview Changes</h3>
-    <pre id="previewCode"></pre>
-    <div class="preview-actions">
-      <button id="applyPreview">Apply Changes</button>
-      <button id="cancelPreview">Cancel</button>
-    </div>
-  </div>
-</div>
-
-<!-- Toast Notification -->
-<div id="toast" class="toast"></div>
 
 <script>
 // Toast notification system
@@ -516,13 +504,20 @@ class AIEditorApp {
             instructionInput: document.getElementById('instruction'),
             applyButton: document.getElementById('apply'),
             copyButton: document.getElementById('copy'),
-            runButton: document.getElementById('run'),
             previewCodeElement: document.getElementById('previewCode'),
             previewModal: document.getElementById('previewModal'),
             applyPreviewButton: document.getElementById('applyPreview'),
+            addToBottomButton: document.getElementById('addToBottom'),
             cancelPreviewButton: document.getElementById('cancelPreview'),
             clearOutputButton: document.getElementById('clearOutput')
         };
+        
+        // Debug log to check if elements are found
+        console.log('Initialized elements:', {
+            previewCodeElement: !!this.elements.previewCodeElement,
+            previewModal: !!this.elements.previewModal,
+            addToBottomButton: !!this.elements.addToBottomButton
+        });
     }
 
     initializeMonacoEditor() {
@@ -558,44 +553,71 @@ console.log("2 + 3 =", add(2, 3));`,
     }
 
     bindEvents() {
+        console.log('Binding events...');
+        
         // Apply AI edit
-        this.elements.applyButton.addEventListener('click', () => this.safeAIEdit(3));
+        if (this.elements.applyButton) {
+            this.elements.applyButton.addEventListener('click', () => this.safeAIEdit(3));
+            console.log('Bound applyButton');
+        }
         
         // Copy code to clipboard
-        this.elements.copyButton.addEventListener('click', () => this.copyToClipboard());
-        
-        // Run JavaScript code
-        this.elements.runButton.addEventListener('click', () => this.runJavaScript());
-        
+        if (this.elements.copyButton) {
+            this.elements.copyButton.addEventListener('click', () => this.copyToClipboard());
+            console.log('Bound copyButton');
+        }
+
         // Clear output
-        this.elements.clearOutputButton.addEventListener('click', () => this.clearOutput());
+        if (this.elements.clearOutputButton) {
+            this.elements.clearOutputButton.addEventListener('click', () => this.clearOutput());
+            console.log('Bound clearOutputButton');
+        }
         
         // Preview modal actions
-        this.elements.applyPreviewButton.addEventListener('click', () => this.applyEdit());
-        this.elements.cancelPreviewButton.addEventListener('click', () => this.cancelEdit());
+        if (this.elements.applyPreviewButton) {
+            this.elements.applyPreviewButton.addEventListener('click', () => this.applyEdit());
+            console.log('Bound applyPreviewButton');
+        }
+        
+        if (this.elements.addToBottomButton) {
+            this.elements.addToBottomButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.appendToBottom();
+            });
+            console.log('Bound addToBottomButton');
+        } else {
+            console.error('addToBottomButton not found in elements');
+        }
+        
+        if (this.elements.cancelPreviewButton) {
+            this.elements.cancelPreviewButton.addEventListener('click', () => this.cancelEdit());
+            console.log('Bound cancelPreviewButton');
+        }
         
         // Enter key to trigger AI edit
-        this.elements.instructionInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && (e.ctrlKey || e.metaKey) && !this.isProcessing) {
-                e.preventDefault();
-                this.safeAIEdit(3);
-            }
-        });
+        if (this.elements.instructionInput) {
+            this.elements.instructionInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && (e.ctrlKey || e.metaKey) && !this.isProcessing) {
+                    e.preventDefault();
+                    this.safeAIEdit(3);
+                }
+            });
+        }
         
         // Close modal when clicking outside
-        window.addEventListener('click', (e) => {
-            if (e.target === this.elements.previewModal) {
-                this.cancelEdit();
-            }
-        });
+        if (this.elements.previewModal) {
+            window.addEventListener('click', (e) => {
+                if (e.target === this.elements.previewModal) {
+                    this.cancelEdit();
+                }
+            });
+        }
         
         // Keyboard shortcuts
-        document.addEventListener('keydown', (e) => {
-            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-                e.preventDefault();
-                this.runJavaScript();
-            }
-        });
+        
+        // Debug: Log all elements
+        console.log('All elements:', Object.keys(this.elements).filter(key => this.elements[key]));
     }
 
     validateInputs() {
@@ -672,6 +694,19 @@ ${funcCode}
     }
 
     showPreviewModal(originalCode, editedCode) {
+        console.log('showPreviewModal called with:', { originalCode, editedCode });
+        
+        if (!this.elements.previewCodeElement || !this.elements.previewModal) {
+            console.error('Preview elements not found');
+            return;
+        }
+        
+        // Store for later use - do this FIRST
+        this.lastFunctionCode = originalCode;
+        this.lastEditResponse = editedCode;
+        
+        console.log('Stored lastEditResponse, length:', this.lastEditResponse.length);
+        
         this.elements.previewCodeElement.textContent = editedCode;
         
         // Syntax highlighting for preview if Monaco is available
@@ -686,11 +721,12 @@ ${funcCode}
                 });
         }
         
+        // Show the modal
         this.elements.previewModal.style.display = 'block';
         
-        // Store for later use
-        this.lastFunctionCode = originalCode;
-        this.lastEditResponse = editedCode;
+        // Debug log
+        console.log('Preview modal shown with content length:', editedCode.length);
+        console.log('Current lastEditResponse length:', this.lastEditResponse.length);
     }
 
     applyEdit() {
@@ -725,6 +761,49 @@ ${funcCode}
         this.resetProcessingState();
     }
 
+    appendToBottom() {
+        console.log('appendToBottom called');
+        console.log('lastEditResponse:', this.lastEditResponse ? `exists (length: ${this.lastEditResponse.length})` : 'undefined');
+        console.log('editor exists:', !!this.editor);
+        
+        if (!this.lastEditResponse) {
+            console.error('No edit response available');
+            this.toastManager.show('No code to add. Please try your edit again.', 'error');
+            return;
+        }
+        
+        try {
+            const currentCode = this.editor.getValue();
+            console.log('Current code length:', currentCode.length);
+            
+            const newCode = currentCode + '\n\n' + this.lastEditResponse;
+            
+            this.editor.getModel().setValue(newCode);
+            console.log('Code updated in editor');
+            
+            if (this.elements.previewModal) {
+                this.elements.previewModal.style.display = 'none';
+                console.log('Preview modal hidden');
+            } else {
+                console.warn('Preview modal element not found');
+            }
+            
+            this.toastManager.show("Code added to the bottom of the editor!", 'success');
+        } catch (error) {
+            console.error("Error in appendToBottom:", error);
+            this.toastManager.show(`Failed to add code: ${error.message}`, 'error');
+        } finally {
+            // Don't reset the processing state here as it clears lastEditResponse
+            // this.resetProcessingState();
+            this.isProcessing = false;
+            if (this.elements.applyButton) {
+                this.elements.applyButton.disabled = false;
+                this.elements.applyButton.textContent = "Apply AI Edit";
+                this.elements.applyButton.classList.remove('loading');
+            }
+        }
+    }
+
     resetProcessingState() {
         this.isProcessing = false;
         this.elements.applyButton.disabled = false;
@@ -745,42 +824,69 @@ ${funcCode}
     }
 
     runJavaScript() {
+        // Save original console methods
+        const originalConsole = {
+            log: console.log,
+            error: console.error,
+            warn: console.warn,
+            info: console.info,
+            debug: console.debug
+        };
+
         try {
             // Show output panel
-            this.outputPanel.style.display = 'block';
+            if (this.elements.outputPanel) {
+                this.elements.outputPanel.style.display = 'block';
+            }
             
-            // Capture console.log outputs
-            const originalConsoleLog = console.log;
-            const logs = [];
-            
+            // Clear previous output
+            if (this.elements.outputDiv) {
+                this.elements.outputDiv.textContent = '';
+            }
+
+            // Override console methods to capture output
             console.log = (...args) => {
-                logs.push(args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : arg).join(' '));
-                originalConsoleLog.apply(console, args);
+                const message = args.map(arg => 
+                    typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+                ).join(' ');
+                
+                if (this.elements.outputDiv) {
+                    const logLine = document.createElement('div');
+                    logLine.textContent = message;
+                    this.elements.outputDiv.appendChild(logLine);
+                }
+                originalConsole.log(...args);
             };
-            
+
             // Execute the code
             const code = this.editor.getValue();
             const result = new Function(code)();
             
-            // Restore original console.log
-            console.log = originalConsoleLog;
-            
-            // Display the output
-            let output = '';
-            if (logs.length > 0) {
-                output = logs.join('\n');
-            }
-            
+            // Display the return value if any
             if (result !== undefined) {
-                if (output) output += '\n';
-                output += 'Return: ' + (typeof result === 'object' ? JSON.stringify(result) : result);
+                const returnLine = document.createElement('div');
+                returnLine.textContent = `Return: ${JSON.stringify(result, null, 2)}`;
+                returnLine.style.marginTop = '10px';
+                returnLine.style.fontWeight = 'bold';
+                this.elements.outputDiv.appendChild(returnLine);
             }
             
-            this.outputContent.textContent = output || 'Code executed (no output)';
+            // Auto-scroll to bottom
+            if (this.elements.outputDiv) {
+                this.elements.outputDiv.scrollTop = this.elements.outputDiv.scrollHeight;
+            }
             
         } catch (error) {
-            this.outputContent.textContent = 'Error: ' + error.message;
-            console.error("Execution error:", error);
+            const errorLine = document.createElement('div');
+            errorLine.textContent = `Error: ${error.message}`;
+            errorLine.style.color = '#ff6b6b';
+            if (this.elements.outputDiv) {
+                this.elements.outputDiv.appendChild(errorLine);
+            }
+            console.error('Execution error:', error);
+        } finally {
+            // Restore original console methods
+            Object.assign(console, originalConsole);
         }
     }
 
@@ -809,13 +915,13 @@ ${funcCode}
             try {
                 this.toastManager.show(`Attempt ${attempt}/${retries}: Processing...`);
                 
-                // Step 1: Extract function
+                // Extract function
                 const funcCode = await this.extractFunction(funcName, code);
                 
-                // Step 2: Request AI edit
+                // Request AI edit
                 const editResp = await this.requestAIEdit(funcCode, instruction);
                 
-                // Step 3: Validate JavaScript syntax
+                // Validate JavaScript syntax
                 if (this.validateJavaScript(editResp)) {
                     this.showPreviewModal(funcCode, editResp);
                     this.elements.applyButton.disabled = false;
