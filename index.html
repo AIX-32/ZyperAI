@@ -7,294 +7,296 @@
 <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdn.jsdelivr.net/npm/monaco-editor@0.41.0/min/vs/editor/editor.main.css">
 <style>
 :root {
-  --primary-dark: #1A1528;
-  --primary: #2D2640;
-  --primary-light: #3A3250;
-  --accent: #8A63D2;
-  --accent-light: #9D7AE5;
-  --text-primary: #FFFFFF;
-  --text-secondary: #C8C2D8;
-  --outline: #504768;
-  --success: #a55ce1;
-  --warning: #FFD166;
-  --error: #FF6B6B;
-  --spacing-xs: 6px;
-  --spacing-sm: 20px;
-  --spacing-md: 14px;
-  --spacing-lg: 18px;
-  --spacing-xl: 26px;
-  --radius-sm: 14px;
-  --radius-md: 18px;
-  --radius-lg: 22px;
-  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --primary-dark: #1A1528;
+    --primary: #2D2640;
+    --primary-light: #3A3250;
+    --accent: #8A63D2;
+    --accent-light: #9D7AE5;
+    --text-primary: #FFFFFF;
+    --text-secondary: #C8C2D8;
+    --outline: #504768;
+    --success: #a55ce1;
+    --warning: #FFD166;
+    --error: #FF6B6B;
+    --spacing-xs: 6px;
+    --spacing-sm: 20px;
+    --spacing-md: 14px;
+    --spacing-lg: 18px;
+    --spacing-xl: 26px;
+    --radius-sm: 14px;
+    --radius-md: 18px;
+    --radius-lg: 22px;
+    --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-  height: 100vh;
-  color: var(--text-primary);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  line-height: 1.5;
+    height: 100vh;
+    color: var(--text-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    line-height: 1.5;
 }
 
 /* TOPBAR */
 #topBar {
-  height: 56px;
-  background: var(--primary);
-  color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  padding: 0 var(--spacing-xl);
-  font-size: 14px;
-  border-bottom: 1px solid var(--outline);
-  flex-shrink: 0;
-  font-weight: 500;
-  backdrop-filter: blur(8px);
+    height: 56px;
+    background: var(--primary);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    padding: 0 var(--spacing-xl);
+    font-size: 14px;
+    border-bottom: 1px solid var(--outline);
+    flex-shrink: 0;
+    font-weight: 500;
+    backdrop-filter: blur(8px);
 }
 
 /* MAIN SPLIT AREA */
 #mainArea {
-  display: flex;
-  flex: 1;
-  overflow: hidden;
-  background: #1E1A2F;
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    background: #1E1A2F;
 }
 
 /* SIDEBAR */
 #sidebar {
-  width: 340px;
-  background: var(--primary);
-  color: var(--text-secondary);
-  padding: var(--spacing-lg);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
-  font-family: 'Fira Code', monospace;
-  border: 1px solid var(--outline);
-  flex-shrink: 0;
-  overflow-y: auto;
-  margin: var(--spacing-xl);
-  border-radius: var(--radius-lg);
+    width: 340px;
+    background: var(--primary);
+    color: var(--text-secondary);
+    padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    font-family: 'Fira Code', monospace;
+    border: 1px solid var(--outline);
+    flex-shrink: 0;
+    overflow-y: auto;
+    margin: var(--spacing-xl);
+    border-radius: var(--radius-lg);
 }
 
 #sidebar button {
-  background: transparent;
-  color: var(--text-secondary);
-  border: none;
-  text-align: left;
-  padding: var(--spacing-md) var(--spacing-lg);
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: var(--transition);
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-md);
+    background: transparent;
+    color: var(--text-secondary);
+    border: none;
+    text-align: left;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
 }
 
 #sidebar button:hover {
-  background: var(--primary-light);
-  color: var(--text-primary);
+    background: var(--primary-light);
+    color: var(--text-primary);
 }
 
 /* AI Controls Section */
 #aiControls {
-  margin-top: var(--spacing-xl);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
+    margin-top: var(--spacing-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
 }
 
 .controls-row {
-  display: flex;
-  gap: var(--spacing-md);
+    display: flex;
+    gap: var(--spacing-md);
 }
 
 /* EDITOR AREA */
 #editorWrapper {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  overflow: hidden;
-  background: var(--primary-dark);
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+    background: var(--primary-dark);
 }
 
 /* EDITOR */
 #editor {
-  flex: 1;
-  background: #1E1A2F;
-  color: #E8E4F2;
-  font-family: 'Fira Code', monospace;
-  font-size: 14px;
-  padding: var(--spacing-xl);
-  overflow: auto;
-  line-height: 1.6;
-  border: none;
+    flex: 1;
+    background: #1E1A2F;
+    color: #E8E4F2;
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    padding: var(--spacing-xl);
+    overflow: auto;
+    line-height: 1.6;
+    border: none;
 }
 
 /* CONTROLS */
 #controls {
-  background: var(--primary);
-  padding: var(--spacing-lg);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
-  border-top: 1px solid var(--outline);
+    background: var(--primary);
+    padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    border-top: 1px solid var(--outline);
 }
 
-#instruction, #funcName {
-  padding: var(--spacing-md);
-  font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  background: var(--primary-light);
-  color: var(--text-primary);
-  border: 1px solid var(--outline);
-  border-radius: var(--radius-md);
-  resize: vertical;
-  width: 100%;
-  transition: var(--transition);
+#instruction,
+#funcName {
+    padding: var(--spacing-md);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    background: var(--primary-light);
+    color: var(--text-primary);
+    border: 1px solid var(--outline);
+    border-radius: var(--radius-md);
+    resize: vertical;
+    width: 100%;
+    transition: var(--transition);
 }
 
-#instruction:focus, #funcName:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 2px rgba(138, 99, 210, 0.2);
+#instruction:focus,
+#funcName:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(138, 99, 210, 0.2);
 }
 
 /* BUTTONS */
 button {
-  background: #8e51ff !important;
-  color: white !important;
-  padding: var(--spacing-md) var(--spacing-lg)!important;
-  border: none;
-  border-radius: var(--radius-sm)!important;
-  font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: var(--transition);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  align-items: center;
-  flex-grow: 1;
-  gap: var(--spacing-sm);
+    background: #8e51ff !important;
+    color: white !important;
+    padding: var(--spacing-md) var(--spacing-lg) !important;
+    border: none;
+    border-radius: var(--radius-sm) !important;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    gap: var(--spacing-sm);
 }
 
 button:hover {
-  background: color-mix(in srgb, var(--primary-light) 90%, white);
-  transform: translateY(-1px);
+    background: color-mix(in srgb, var(--primary-light) 90%, white);
+    transform: translateY(-1px);
 }
 
 button:active {
-  transform: translateY(0);
+    transform: translateY(0);
 }
 
 #apply {
-  background: var(--md-sys-color-primary);
-  color: var(--md-sys-color-on-primary);
-  border: 1px solid var(--md-sys-color-outline);
+    background: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+    border: 1px solid var(--md-sys-color-outline);
 }
 
 #apply:hover {
-  background: var(--md-sys-color-primary-container);
-  color: var(--md-sys-color-on-primary-container);
+    background: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
 }
 
 #copy {
-  background: #8A63D2 !important;
-  color: white !important;
-  border: 1px solid var(--md-sys-color-outline);
+    background: #8A63D2 !important;
+    color: white !important;
+    border: 1px solid var(--md-sys-color-outline);
 }
 
 #copy:hover {
-  background: #8A63D2 !important;
-  color: white !important;
+    background: #8A63D2 !important;
+    color: white !important;
 }
 
 
 
 #clearOutput {
-  background: rgba(255, 107, 107, 0.2);
-  color: #ff6b6b;
-  padding: 4px 12px;
-  font-size: 11px;
-  border: 1px solid rgba(255, 107, 107, 0.3);
-  border-radius: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+    background: rgba(255, 107, 107, 0.2);
+    color: #ff6b6b;
+    padding: 4px 12px;
+    font-size: 11px;
+    border: 1px solid rgba(255, 107, 107, 0.3);
+    border-radius: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 #clearOutput:hover {
-  background: rgba(255, 107, 107, 0.3);
-  transform: translateY(-1px);
+    background: rgba(255, 107, 107, 0.3);
+    transform: translateY(-1px);
 }
 
 #clearOutput:active {
-  transform: translateY(0);
+    transform: translateY(0);
 }
 
 #clearOutput::before {
-  content: '✕';
-  font-size: 10px;
-  line-height: 1;
+    content: '✕';
+    font-size: 10px;
+    line-height: 1;
 }
 
 /* OUTPUT PANEL */
 /* Output Panel Styles */
 #outputPanel {
-  background: #1e1e2f;
-  color: #e0dfff;
-  font-family: 'Fira Code', monospace;
-  font-size: 14px;
-  padding: 0;
-  border-top: 1px solid var(--md-sys-color-outline);
-  max-height: 300px;
-  overflow-y: auto;
-  display: none;
-  position: relative;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+    background: #1e1e2f;
+    color: #e0dfff;
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    padding: 0;
+    border-top: 1px solid var(--md-sys-color-outline);
+    max-height: 300px;
+    overflow-y: auto;
+    display: none;
+    position: relative;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
 }
 
 #outputHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 16px;
-  background: rgba(0, 0, 0, 0.2);
-  border-bottom: 1px solid var(--md-sys-color-outline);
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid var(--md-sys-color-outline);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(5px);
 }
 
 #outputHeader strong {
-  color: #e0dfff;
-  font-weight: 600;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+    color: #e0dfff;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 #outputContent {
-  padding: 16px;
-  line-height: 1.5;
-  white-space: pre-wrap;
-  overflow-x: auto;
-  font-size: 13px;
+    padding: 16px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    overflow-x: auto;
+    font-size: 13px;
 }
 
 /* Syntax highlighting for output */
@@ -302,658 +304,97 @@ button:active {
 #outputContent .token.prolog,
 #outputContent .token.doctype,
 #outputContent .token.cdata {
-  color: #6A9955;
+    color: #6A9955;
 }
 
 #outputContent .token.punctuation {
-  color: #d4d4d4;
+    color: #d4d4d4;
 }
 
 #outputContent .token.string,
 #outputContent .token.attr-value {
-  color: #ce9178;
+    color: #ce9178;
 }
 
 #outputContent .token.keyword,
 #outputContent .token.operator,
 #outputContent .token.boolean,
 #outputContent .token.number {
-  color: #569cd6;
+    color: #569cd6;
 }
 
 #outputContent .token.function {
-  color: #dcdcaa;
+    color: #dcdcaa;
 }
 
 #outputContent .token.error {
-  color: #f44747;
+    color: #f44747;
 }
 
 /* TOASTS */
 .toast {
-  position: fixed;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: var(--spacing-md) var(--spacing-lg);
-  border-radius: var(--radius-md);
-  background: var(--primary-light);
-  color: var(--text-primary);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  opacity: 0;
-  transition: var(--transition);
-  z-index: 1000;
-  text-align: center;
-  font-size: 14px;
-  border: 1px solid var(--outline);
-  backdrop-filter: blur(8px);
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--radius-md);
+    background: var(--primary-light);
+    color: var(--text-primary);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transition: var(--transition);
+    z-index: 1000;
+    text-align: center;
+    font-size: 14px;
+    border: 1px solid var(--outline);
+    backdrop-filter: blur(8px);
 }
 
 .toast.show {
-  opacity: 1;
-  transform: translateX(-50%) translateY(-10px);
+    opacity: 1;
+    transform: translateX(-50%) translateY(-10px);
 }
 
 /* SCROLLBARS */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+    width: 8px;
+    height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--primary);
+    background: var(--primary);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--outline);
-  border-radius: var(--radius-full);
+    background: var(--outline);
+    border-radius: var(--radius-full);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--accent);
+    background: var(--accent);
 }
 
 /* Preview Modal */
 #previewModal {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: var(--primary);
-  padding: var(--spacing-xl);
-  border-radius: var(--radius-lg);
-  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.3);
-  z-index: 1001;
-  width: 80%;
-  max-width: 700px;
-  max-height: 80vh;
-  overflow: auto;
-  border: 1px solid var(--outline);
-  backdrop-filter: blur(12px);
-}
-</style>
-</head>
-<body>
-  <!-- TOP BAR -->
-  <div id="topBar">ZyperAI</div>
-
-  <!-- MAIN LAYOUT -->
-  <div id="mainArea">
-    
-    <!-- SIDEBAR -->
-    <div id="sidebar">
-      <!-- AI Controls -->
-      <div id="aiControls">
-        <input type="text" id="funcName" placeholder="Function name (e.g., add)">
-        <textarea id="instruction" placeholder="Describe your change..." rows="4"></textarea>
-        <div class="controls-row">
-          <button id="apply">Apply</button>
-          <button id="copy">Copy</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- MAIN WORKSPACE -->
-    <div id="editorWrapper">
-      
-      <!-- CODE EDITOR -->
-      <div id="editor"></div>
-
-      <!-- OUTPUT PANEL -->
-      <div id="outputPanel">
-        <div id="outputHeader">
-          <strong>Console Output</strong>
-          <button id="clearOutput" title="Clear console">Clear</button>
-        </div>
-        <div id="outputContent"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Toast Notification -->
-  <div id="toast" class="toast"></div>
-  
-  <!-- Preview Modal -->
-  <div id="previewModal" class="preview-modal" style="display: none;">
-    <div class="preview-content">
-      <h3>Preview Changes</h3>
-      <pre id="previewCode" style="white-space: pre-wrap; font-family: 'Fira Code', monospace; background: #1e1e2f; padding: 16px; border-radius: 4px; max-height: 60vh; overflow-y: auto;"></pre>
-      <div class="preview-actions" style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 16px;">
-        <button id="applyPreview" style="background: #8A63D2; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Apply Changes</button>
-        <button id="addToBottom" style="background: #4CAF50; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Add to Bottom</button>
-        <button id="cancelPreview" style="background: #f44336; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Cancel</button>
-      </div>
-    </div>
-  </div>
-
-<script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.41.0/min/vs/loader.js"></script>
-<script src="https://js.puter.com/v2/"></script>
-
-<script>
-// Toast notification system
-class ToastManager {
-    constructor() {
-        this.toast = document.getElementById('toast');
-        this.hideTimeout = null;
-    }
-
-    show(message, type = 'info') {
-        // Clear any pending hide timeout
-        if (this.hideTimeout) {
-            clearTimeout(this.hideTimeout);
-            this.hideTimeout = null;
-        }
-
-        // Set message and classes
-        this.toast.textContent = message;
-        this.toast.className = `toast show ${type}`;
-
-        // Auto-hide after 3 seconds
-        this.hideTimeout = setTimeout(() => this.hide(), 3000);
-    }
-
-    hide() {
-        this.toast.classList.remove('show');
-        if (this.hideTimeout) {
-            clearTimeout(this.hideTimeout);
-            this.hideTimeout = null;
-        }
-    }
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--primary);
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.3);
+    z-index: 1001;
+    width: 80%;
+    max-width: 700px;
+    max-height: 80vh;
+    overflow: auto;
+    border: 1px solid var(--outline);
+    backdrop-filter: blur(12px);
 }
 
-// Main application controller
-class AIEditorApp {
-    constructor() {
-        this.editor = null;
-        this.isProcessing = false;
-        this.lastFunctionCode = '';
-        this.lastEditResponse = '';
-        this.toastManager = new ToastManager();
-        this.outputPanel = document.getElementById('outputPanel');
-        this.outputContent = document.getElementById('outputContent');
-        
-        this.initializeElements();
-        this.initializeMonacoEditor();
-        this.bindEvents();
-    }
-
-    initializeElements() {
-        this.elements = {
-            funcNameInput: document.getElementById('funcName'),
-            instructionInput: document.getElementById('instruction'),
-            applyButton: document.getElementById('apply'),
-            copyButton: document.getElementById('copy'),
-            previewCodeElement: document.getElementById('previewCode'),
-            previewModal: document.getElementById('previewModal'),
-            applyPreviewButton: document.getElementById('applyPreview'),
-            addToBottomButton: document.getElementById('addToBottom'),
-            cancelPreviewButton: document.getElementById('cancelPreview'),
-            clearOutputButton: document.getElementById('clearOutput')
-        };
-        
-        // Debug log to check if elements are found
-        console.log('Initialized elements:', {
-            previewCodeElement: !!this.elements.previewCodeElement,
-            previewModal: !!this.elements.previewModal,
-            addToBottomButton: !!this.elements.addToBottomButton
-        });
-    }
-
-    initializeMonacoEditor() {
-        // Configure and initialize Monaco Editor
-        require.config({ 
-            paths: { 
-                'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@0.41.0/min/vs' 
-            } 
-        });
-        
-        require(['vs/editor/editor.main'], () => {
-            this.editor = monaco.editor.create(document.getElementById('editor'), {
-                value: `// Example dependent function
-function greet(name) {
-    return "Hello " + name;
-}
-
-// Function we want AI to edit
-function add(a, b) {  
-    return a + b;
-}
-
-// Try calling functions to test
-console.log(greet("World"));
-console.log("2 + 3 =", add(2, 3));`,
-                language: 'javascript',
-                theme: 'vs-dark',
-                automaticLayout: true,
-                fontSize: 14,
-                minimap: { enabled: false }
-            });
-        });
-    }
-
-    bindEvents() {
-        console.log('Binding events...');
-        
-        // Apply AI edit
-        if (this.elements.applyButton) {
-            this.elements.applyButton.addEventListener('click', () => this.safeAIEdit(3));
-            console.log('Bound applyButton');
-        }
-        
-        // Copy code to clipboard
-        if (this.elements.copyButton) {
-            this.elements.copyButton.addEventListener('click', () => this.copyToClipboard());
-            console.log('Bound copyButton');
-        }
-
-        // Clear output
-        if (this.elements.clearOutputButton) {
-            this.elements.clearOutputButton.addEventListener('click', () => this.clearOutput());
-            console.log('Bound clearOutputButton');
-        }
-        
-        // Preview modal actions
-        if (this.elements.applyPreviewButton) {
-            this.elements.applyPreviewButton.addEventListener('click', () => this.applyEdit());
-            console.log('Bound applyPreviewButton');
-        }
-        
-        if (this.elements.addToBottomButton) {
-            this.elements.addToBottomButton.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                this.appendToBottom();
-            });
-            console.log('Bound addToBottomButton');
-        } else {
-            console.error('addToBottomButton not found in elements');
-        }
-        
-        if (this.elements.cancelPreviewButton) {
-            this.elements.cancelPreviewButton.addEventListener('click', () => this.cancelEdit());
-            console.log('Bound cancelPreviewButton');
-        }
-        
-        // Enter key to trigger AI edit
-        if (this.elements.instructionInput) {
-            this.elements.instructionInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter' && (e.ctrlKey || e.metaKey) && !this.isProcessing) {
-                    e.preventDefault();
-                    this.safeAIEdit(3);
-                }
-            });
-        }
-        
-        // Close modal when clicking outside
-        if (this.elements.previewModal) {
-            window.addEventListener('click', (e) => {
-                if (e.target === this.elements.previewModal) {
-                    this.cancelEdit();
-                }
-            });
-        }
-        
-        // Keyboard shortcuts
-        
-        // Debug: Log all elements
-        console.log('All elements:', Object.keys(this.elements).filter(key => this.elements[key]));
-    }
-
-    validateInputs() {
-        const funcName = this.elements.funcNameInput.value.trim();
-        const instruction = this.elements.instructionInput.value.trim();
-        
-        if (!funcName) {
-            this.toastManager.show("Please enter a function name!", 'error');
-            this.elements.funcNameInput.focus();
-            return false;
-        }
-        
-        if (!instruction) {
-            this.toastManager.show("Please enter an instruction!", 'error');
-            this.elements.instructionInput.focus();
-            return false;
-        }
-        
-        return { funcName, instruction };
-    }
-
-    async extractFunction(funcName, code) {
-        const funcResp = await puter.ai.chat(`
-You are a code assistant. Extract ONLY the function named "${funcName}" from this code:
-${code}
-Respond ONLY with the function code including braces.
-`);
-        
-        const funcCode = (funcResp.text ?? funcResp).toString().trim();
-        if (!funcCode) {
-            throw new Error(`Function "${funcName}" not found in the code`);
-        }
-        
-        // Basic validation to ensure we got a function
-        if (!funcCode.includes('function') && !funcCode.startsWith('const') && !funcCode.startsWith('let')) {
-            throw new Error(`Extracted code doesn't appear to be a function: ${funcCode}`);
-        }
-        
-        return funcCode;
-    }
-
-    async requestAIEdit(funcCode, instruction) {
-        const editRespRaw = await puter.ai.chat(`
-Modify this JavaScript function according to the instruction:
-"${instruction}"
-Do NOT change other parts of the code. Only edit inside this function.
-Ensure there is only one return statement.
-Output valid JS code, no markdown or quotes.
-Original function:
-${funcCode}
-`);
-        
-        const editResp = (editRespRaw.text ?? editRespRaw).toString().trim();
-        
-        // Remove code block markers if present
-        const cleanedResponse = editResp.replace(/^```(javascript|js)?\s*|\s*```$/g, '');
-        
-        if (!cleanedResponse) {
-            throw new Error("AI returned empty edit response");
-        }
-        
-        return cleanedResponse;
-    }
-
-    validateJavaScript(code) {
-        try {
-            // Try to parse the code as a function
-            new Function(code);
-            return true;
-        } catch (error) {
-            console.error("Syntax validation error:", error);
-            return false;
-        }
-    }
-
-    showPreviewModal(originalCode, editedCode) {
-        console.log('showPreviewModal called with:', { originalCode, editedCode });
-        
-        if (!this.elements.previewCodeElement || !this.elements.previewModal) {
-            console.error('Preview elements not found');
-            return;
-        }
-        
-        // Store for later use - do this FIRST
-        this.lastFunctionCode = originalCode;
-        this.lastEditResponse = editedCode;
-        
-        console.log('Stored lastEditResponse, length:', this.lastEditResponse.length);
-        
-        this.elements.previewCodeElement.textContent = editedCode;
-        
-        // Syntax highlighting for preview if Monaco is available
-        if (typeof monaco !== 'undefined') {
-            monaco.editor.colorize(editedCode, 'javascript', {})
-                .then(html => {
-                    this.elements.previewCodeElement.innerHTML = html;
-                })
-                .catch(err => {
-                    console.warn("Could not colorize preview:", err);
-                    this.elements.previewCodeElement.textContent = editedCode;
-                });
-        }
-        
-        // Show the modal
-        this.elements.previewModal.style.display = 'block';
-        
-        // Debug log
-        console.log('Preview modal shown with content length:', editedCode.length);
-        console.log('Current lastEditResponse length:', this.lastEditResponse.length);
-    }
-
-    applyEdit() {
-        try {
-            const fullCode = this.editor.getValue();
-            // Create a regex pattern that handles whitespace and newlines
-            const escapedCode = this.lastFunctionCode
-                .replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-                .replace(/\s+/g, '\\s*');
-            
-            const regex = new RegExp(escapedCode, 's'); // 's' flag makes . match newlines
-            
-            if (!regex.test(fullCode)) {
-                throw new Error('Could not find the original function in the editor. The code may have been modified.');
-            }
-            
-            const updatedCode = fullCode.replace(regex, this.lastEditResponse);
-            this.editor.getModel().setValue(updatedCode);
-            this.elements.previewModal.style.display = 'none';
-            this.toastManager.show("Function edited successfully!", 'success');
-        } catch (error) {
-            console.error("Error applying edit:", error);
-            this.toastManager.show(`Failed to apply edit: ${error.message}`, 'error');
-        } finally {
-            this.resetProcessingState();
-        }
-    }
-
-    cancelEdit() {
-        this.elements.previewModal.style.display = 'none';
-        this.toastManager.show("Edit cancelled.");
-        this.resetProcessingState();
-    }
-
-    appendToBottom() {
-        console.log('appendToBottom called');
-        console.log('lastEditResponse:', this.lastEditResponse ? `exists (length: ${this.lastEditResponse.length})` : 'undefined');
-        console.log('editor exists:', !!this.editor);
-        
-        if (!this.lastEditResponse) {
-            console.error('No edit response available');
-            this.toastManager.show('No code to add. Please try your edit again.', 'error');
-            return;
-        }
-        
-        try {
-            const currentCode = this.editor.getValue();
-            console.log('Current code length:', currentCode.length);
-            
-            const newCode = currentCode + '\n\n' + this.lastEditResponse;
-            
-            this.editor.getModel().setValue(newCode);
-            console.log('Code updated in editor');
-            
-            if (this.elements.previewModal) {
-                this.elements.previewModal.style.display = 'none';
-                console.log('Preview modal hidden');
-            } else {
-                console.warn('Preview modal element not found');
-            }
-            
-            this.toastManager.show("Code added to the bottom of the editor!", 'success');
-        } catch (error) {
-            console.error("Error in appendToBottom:", error);
-            this.toastManager.show(`Failed to add code: ${error.message}`, 'error');
-        } finally {
-            // Don't reset the processing state here as it clears lastEditResponse
-            // this.resetProcessingState();
-            this.isProcessing = false;
-            if (this.elements.applyButton) {
-                this.elements.applyButton.disabled = false;
-                this.elements.applyButton.textContent = "Apply AI Edit";
-                this.elements.applyButton.classList.remove('loading');
-            }
-        }
-    }
-
-    resetProcessingState() {
-        this.isProcessing = false;
-        this.elements.applyButton.disabled = false;
-        this.elements.applyButton.textContent = "Apply AI Edit";
-        this.elements.applyButton.classList.remove('loading');
-        this.lastFunctionCode = '';
-        this.lastEditResponse = '';
-    }
-
-    async copyToClipboard() {
-        try {
-            await navigator.clipboard.writeText(this.editor.getValue());
-            this.toastManager.show("Code copied to clipboard!", 'success');
-        } catch (err) {
-            console.error("Copy failed:", err);
-            this.toastManager.show("Failed to copy code. Check console for details.", 'error');
-        }
-    }
-
-    runJavaScript() {
-        // Save original console methods
-        const originalConsole = {
-            log: console.log,
-            error: console.error,
-            warn: console.warn,
-            info: console.info,
-            debug: console.debug
-        };
-
-        try {
-            // Show output panel
-            if (this.elements.outputPanel) {
-                this.elements.outputPanel.style.display = 'block';
-            }
-            
-            // Clear previous output
-            if (this.elements.outputDiv) {
-                this.elements.outputDiv.textContent = '';
-            }
-
-            // Override console methods to capture output
-            console.log = (...args) => {
-                const message = args.map(arg => 
-                    typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
-                ).join(' ');
-                
-                if (this.elements.outputDiv) {
-                    const logLine = document.createElement('div');
-                    logLine.textContent = message;
-                    this.elements.outputDiv.appendChild(logLine);
-                }
-                originalConsole.log(...args);
-            };
-
-            // Execute the code
-            const code = this.editor.getValue();
-            const result = new Function(code)();
-            
-            // Display the return value if any
-            if (result !== undefined) {
-                const returnLine = document.createElement('div');
-                returnLine.textContent = `Return: ${JSON.stringify(result, null, 2)}`;
-                returnLine.style.marginTop = '10px';
-                returnLine.style.fontWeight = 'bold';
-                this.elements.outputDiv.appendChild(returnLine);
-            }
-            
-            // Auto-scroll to bottom
-            if (this.elements.outputDiv) {
-                this.elements.outputDiv.scrollTop = this.elements.outputDiv.scrollHeight;
-            }
-            
-        } catch (error) {
-            const errorLine = document.createElement('div');
-            errorLine.textContent = `Error: ${error.message}`;
-            errorLine.style.color = '#ff6b6b';
-            if (this.elements.outputDiv) {
-                this.elements.outputDiv.appendChild(errorLine);
-            }
-            console.error('Execution error:', error);
-        } finally {
-            // Restore original console methods
-            Object.assign(console, originalConsole);
-        }
-    }
-
-    clearOutput() {
-        this.outputContent.textContent = '';
-    }
-
-    async safeAIEdit(retries = 3) {
-        if (this.isProcessing) {
-            this.toastManager.show("Already processing a request", 'error');
-            return;
-        }
-        
-        const validated = this.validateInputs();
-        if (!validated) return;
-        
-        const { funcName, instruction } = validated;
-        this.isProcessing = true;
-        this.elements.applyButton.disabled = true;
-        this.elements.applyButton.textContent = "Processing...";
-        this.elements.applyButton.classList.add('loading');
-        
-        const code = this.editor.getValue();
-        
-        for (let attempt = 1; attempt <= retries; attempt++) {
-            try {
-                this.toastManager.show(`Attempt ${attempt}/${retries}: Processing...`);
-                
-                // Extract function
-                const funcCode = await this.extractFunction(funcName, code);
-                
-                // Request AI edit
-                const editResp = await this.requestAIEdit(funcCode, instruction);
-                
-                // Validate JavaScript syntax
-                if (this.validateJavaScript(editResp)) {
-                    this.showPreviewModal(funcCode, editResp);
-                    this.elements.applyButton.disabled = false;
-                    this.elements.applyButton.textContent = "Apply AI Edit";
-                    this.elements.applyButton.classList.remove('loading');
-                    return;
-                } else {
-                    throw new Error("AI produced invalid JavaScript syntax");
-                }
-            } catch (err) {
-                console.error(`Attempt ${attempt} failed:`, err);
-                
-                if (attempt === retries) {
-                    this.toastManager.show("AI failed to produce valid code after all retries.", 'error');
-                    this.resetProcessingState();
-                } else {
-                    this.toastManager.show(`Attempt ${attempt} failed: ${err.message}`, 'error');
-                    // Wait a bit before retrying
-                    await new Promise(resolve => setTimeout(resolve, 1000));
-                }
-            }
-        }
-    }
-}
-
-// Initialize the application when the page loads
-document.addEventListener('DOMContentLoaded', () => {
-    new AIEditorApp();
-});
-</script>
-
-<style>
 /* Preview Modal Styles */
 .preview-modal {
     display: none;
@@ -1059,8 +500,575 @@ button.loading::after {
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
+</style>
+</head>
+<body>
+<!-- TOP BAR -->
+<div id="topBar">ZyperAI</div>
+
+<!-- MAIN LAYOUT -->
+<div id="mainArea">
+
+    <!-- SIDEBAR -->
+    <div id="sidebar">
+        <!-- AI Controls -->
+        <div id="aiControls">
+            <input type="text" id="funcName" placeholder="Function name (e.g., add)">
+            <textarea id="instruction" placeholder="Describe your change..." rows="4"></textarea>
+            <div class="controls-row">
+                <button id="apply">Apply</button>
+                <button id="copy">Copy</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN WORKSPACE -->
+    <div id="editorWrapper">
+
+        <!-- CODE EDITOR -->
+        <div id="editor"></div>
+
+        <!-- OUTPUT PANEL -->
+        <div id="outputPanel">
+            <div id="outputHeader">
+                <strong>Console Output</strong>
+                <button id="clearOutput" title="Clear console">Clear</button>
+            </div>
+            <div id="outputContent"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Notification -->
+<div id="toast" class="toast"></div>
+
+<!-- Preview Modal -->
+<div id="previewModal" class="preview-modal" style="display: none;">
+    <div class="preview-content">
+        <h3>Preview Changes</h3>
+        <pre id="previewCode"
+            style="white-space: pre-wrap; font-family: 'Fira Code', monospace; background: #1e1e2f; padding: 16px; border-radius: 4px; max-height: 60vh; overflow-y: auto;"></pre>
+        <div class="preview-actions" style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 16px;">
+            <button id="applyPreview" style="background: #8A63D2; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Apply Changes</button>
+            <button id="addToBottom" style="background: #4CAF50; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Add to Bottom</button>
+            <button id="cancelPreview" style="background: #f44336; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Cancel</button>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.41.0/min/vs/loader.js"></script>
+<script src="https://js.puter.com/v2/"></script>
+
+<script>
+
+// Toast notification system
+class ToastManager {
+    constructor() {
+        this.toast = document.getElementById('toast');
+        this.hideTimeout = null;
+    }
+
+    show(message, type = 'info') {
+        // Clear any pending hide timeout
+        if (this.hideTimeout) {
+            clearTimeout(this.hideTimeout);
+            this.hideTimeout = null;
+        }
+
+        // Set message and classes
+        this.toast.textContent = message;
+        this.toast.className = `toast show ${type}`;
+
+        // Auto-hide after 3 seconds
+        this.hideTimeout = setTimeout(() => this.hide(), 3000);
+    }
+
+    hide() {
+        this.toast.classList.remove('show');
+        if (this.hideTimeout) {
+            clearTimeout(this.hideTimeout);
+            this.hideTimeout = null;
+        }
+    }
+}
+
+// Main application controller
+class AIEditorApp {
+    constructor() {
+        this.editor = null;
+        this.isProcessing = false;
+        this.lastFunctionCode = '';
+        this.lastEditResponse = '';
+        this.toastManager = new ToastManager();
+        this.outputPanel = document.getElementById('outputPanel');
+        this.outputContent = document.getElementById('outputContent');
+
+        this.initializeElements();
+        this.initializeMonacoEditor();
+        this.bindEvents();
+    }
+
+    initializeElements() {
+        this.elements = {
+            funcNameInput: document.getElementById('funcName'),
+            instructionInput: document.getElementById('instruction'),
+            applyButton: document.getElementById('apply'),
+            copyButton: document.getElementById('copy'),
+            previewCodeElement: document.getElementById('previewCode'),
+            previewModal: document.getElementById('previewModal'),
+            applyPreviewButton: document.getElementById('applyPreview'),
+            addToBottomButton: document.getElementById('addToBottom'),
+            cancelPreviewButton: document.getElementById('cancelPreview'),
+            clearOutputButton: document.getElementById('clearOutput')
+        };
+
+        // Debug log to check if elements are found
+        console.log('Initialized elements:', {
+            previewCodeElement: !!this.elements.previewCodeElement,
+            previewModal: !!this.elements.previewModal,
+            addToBottomButton: !!this.elements.addToBottomButton
+        });
+    }
+
+    initializeMonacoEditor() {
+        // Configure and initialize Monaco Editor
+        require.config({
+            paths: {
+                'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@0.41.0/min/vs'
+            }
+        });
+
+        require(['vs/editor/editor.main'], () => {
+            this.editor = monaco.editor.create(document.getElementById('editor'), {
+                value: `// Example dependent function
+function greet(name) {
+    return "Hello " + name;
+}
+
+// Function we want AI to edit
+function add(a, b) {  
+    return a + b;
+}
+
+// Try calling functions to test
+console.log(greet("World"));
+console.log("2 + 3 =", add(2, 3));`,
+                language: 'javascript',
+                theme: 'vs-dark',
+                automaticLayout: true,
+                fontSize: 14,
+                minimap: { enabled: false }
+            });
+        });
+    }
+
+    bindEvents() {
+        console.log('Binding events...');
+
+        // Apply AI edit
+        if (this.elements.applyButton) {
+            this.elements.applyButton.addEventListener('click', () => this.safeAIEdit(3));
+            console.log('Bound applyButton');
+        }
+
+        // Copy code to clipboard
+        if (this.elements.copyButton) {
+            this.elements.copyButton.addEventListener('click', () => this.copyToClipboard());
+            console.log('Bound copyButton');
+        }
+
+        // Clear output
+        if (this.elements.clearOutputButton) {
+            this.elements.clearOutputButton.addEventListener('click', () => this.clearOutput());
+            console.log('Bound clearOutputButton');
+        }
+
+        // Preview modal actions
+        if (this.elements.applyPreviewButton) {
+            this.elements.applyPreviewButton.addEventListener('click', () => this.applyEdit());
+            console.log('Bound applyPreviewButton');
+        }
+
+        if (this.elements.addToBottomButton) {
+            this.elements.addToBottomButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.appendToBottom();
+            });
+            console.log('Bound addToBottomButton');
+        } else {
+            console.error('addToBottomButton not found in elements');
+        }
+
+        if (this.elements.cancelPreviewButton) {
+            this.elements.cancelPreviewButton.addEventListener('click', () => this.cancelEdit());
+            console.log('Bound cancelPreviewButton');
+        }
+
+        // Enter key to trigger AI edit
+        if (this.elements.instructionInput) {
+            this.elements.instructionInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && (e.ctrlKey || e.metaKey) && !this.isProcessing) {
+                    e.preventDefault();
+                    this.safeAIEdit(3);
+                }
+            });
+        }
+
+        // Close modal when clicking outside
+        if (this.elements.previewModal) {
+            window.addEventListener('click', (e) => {
+                if (e.target === this.elements.previewModal) {
+                    this.cancelEdit();
+                }
+            });
+        }
+
+        // Keyboard shortcuts
+
+        // Debug: Log all elements
+        console.log('All elements:', Object.keys(this.elements).filter(key => this.elements[key]));
+    }
+
+    validateInputs() {
+        const funcName = this.elements.funcNameInput.value.trim();
+        const instruction = this.elements.instructionInput.value.trim();
+
+        if (!funcName) {
+            this.toastManager.show("Please enter a function name!", 'error');
+            this.elements.funcNameInput.focus();
+            return false;
+        }
+
+        if (!instruction) {
+            this.toastManager.show("Please enter an instruction!", 'error');
+            this.elements.instructionInput.focus();
+            return false;
+        }
+
+        return { funcName, instruction };
+    }
+
+    async extractFunction(funcName, code) {
+        const funcResp = await puter.ai.chat(`
+You are a code assistant. Extract ONLY the function named "${funcName}" from this code:
+${code}
+Respond ONLY with the function code including braces.
+`);
+
+        const funcCode = (funcResp.text ?? funcResp).toString().trim();
+        if (!funcCode) {
+            throw new Error(`Function "${funcName}" not found in the code`);
+        }
+
+        // Basic validation to ensure we got a function
+        if (!funcCode.includes('function') && !funcCode.startsWith('const') && !funcCode.startsWith('let')) {
+            throw new Error(`Extracted code doesn't appear to be a function: ${funcCode}`);
+        }
+
+        return funcCode;
+    }
+
+    async requestAIEdit(funcCode, instruction) {
+        const editRespRaw = await puter.ai.chat(`
+Modify this JavaScript function according to the instruction:
+"${instruction}"
+Do NOT change other parts of the code. Only edit inside this function.
+Ensure there is only one return statement.
+Output valid JS code, no markdown or quotes.
+Original function:
+${funcCode}
+`);
+
+        const editResp = (editRespRaw.text ?? editRespRaw).toString().trim();
+
+        // Remove code block markers if present
+        const cleanedResponse = editResp.replace(/^```(javascript|js)?\s*|\s*```$/g, '');
+
+        if (!cleanedResponse) {
+            throw new Error("AI returned empty edit response");
+        }
+
+        return cleanedResponse;
+    }
+
+    validateJavaScript(code) {
+        try {
+            // Try to parse the code as a function
+            new Function(code);
+            return true;
+        } catch (error) {
+            console.error("Syntax validation error:", error);
+            return false;
+        }
+    }
+
+    showPreviewModal(originalCode, editedCode) {
+        console.log('showPreviewModal called with:', { originalCode, editedCode });
+
+        if (!this.elements.previewCodeElement || !this.elements.previewModal) {
+            console.error('Preview elements not found');
+            return;
+        }
+
+        // Store for later use - do this FIRST
+        this.lastFunctionCode = originalCode;
+        this.lastEditResponse = editedCode;
+
+        console.log('Stored lastEditResponse, length:', this.lastEditResponse.length);
+
+        this.elements.previewCodeElement.textContent = editedCode;
+
+        // Syntax highlighting for preview if Monaco is available
+        if (typeof monaco !== 'undefined') {
+            monaco.editor.colorize(editedCode, 'javascript', {})
+                .then(html => {
+                    this.elements.previewCodeElement.innerHTML = html;
+                })
+                .catch(err => {
+                    console.warn("Could not colorize preview:", err);
+                    this.elements.previewCodeElement.textContent = editedCode;
+                });
+        }
+
+        // Show the modal
+        this.elements.previewModal.style.display = 'block';
+
+        // Debug log
+        console.log('Preview modal shown with content length:', editedCode.length);
+        console.log('Current lastEditResponse length:', this.lastEditResponse.length);
+    }
+
+    applyEdit() {
+        try {
+            const fullCode = this.editor.getValue();
+            // Create a regex pattern that handles whitespace and newlines
+            const escapedCode = this.lastFunctionCode
+                .replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+                .replace(/\s+/g, '\\s*');
+
+            const regex = new RegExp(escapedCode, 's'); // 's' flag makes . match newlines
+
+            if (!regex.test(fullCode)) {
+                throw new Error('Could not find the original function in the editor. The code may have been modified.');
+            }
+
+            const updatedCode = fullCode.replace(regex, this.lastEditResponse);
+            this.editor.getModel().setValue(updatedCode);
+            this.elements.previewModal.style.display = 'none';
+            this.toastManager.show("Function edited successfully!", 'success');
+        } catch (error) {
+            console.error("Error applying edit:", error);
+            this.toastManager.show(`Failed to apply edit: ${error.message}`, 'error');
+        } finally {
+            this.resetProcessingState();
+        }
+    }
+
+    cancelEdit() {
+        this.elements.previewModal.style.display = 'none';
+        this.toastManager.show("Edit cancelled.");
+        this.resetProcessingState();
+    }
+
+    appendToBottom() {
+        console.log('appendToBottom called');
+        console.log('lastEditResponse:', this.lastEditResponse ? `exists (length: ${this.lastEditResponse.length})` : 'undefined');
+        console.log('editor exists:', !!this.editor);
+
+        if (!this.lastEditResponse) {
+            console.error('No edit response available');
+            this.toastManager.show('No code to add. Please try your edit again.', 'error');
+            return;
+        }
+
+        try {
+            const currentCode = this.editor.getValue();
+            console.log('Current code length:', currentCode.length);
+
+            const newCode = currentCode + '\n\n' + this.lastEditResponse;
+
+            this.editor.getModel().setValue(newCode);
+            console.log('Code updated in editor');
+
+            if (this.elements.previewModal) {
+                this.elements.previewModal.style.display = 'none';
+                console.log('Preview modal hidden');
+            } else {
+                console.warn('Preview modal element not found');
+            }
+
+            this.toastManager.show("Code added to the bottom of the editor!", 'success');
+        } catch (error) {
+            console.error("Error in appendToBottom:", error);
+            this.toastManager.show(`Failed to add code: ${error.message}`, 'error');
+        } finally {
+            // Don't reset the processing state here as it clears lastEditResponse
+            // this.resetProcessingState();
+            this.isProcessing = false;
+            if (this.elements.applyButton) {
+                this.elements.applyButton.disabled = false;
+                this.elements.applyButton.textContent = "Apply AI Edit";
+                this.elements.applyButton.classList.remove('loading');
+            }
+        }
+    }
+
+    resetProcessingState() {
+        this.isProcessing = false;
+        this.elements.applyButton.disabled = false;
+        this.elements.applyButton.textContent = "Apply AI Edit";
+        this.elements.applyButton.classList.remove('loading');
+        this.lastFunctionCode = '';
+        this.lastEditResponse = '';
+    }
+
+    async copyToClipboard() {
+        try {
+            await navigator.clipboard.writeText(this.editor.getValue());
+            this.toastManager.show("Code copied to clipboard!", 'success');
+        } catch (err) {
+            console.error("Copy failed:", err);
+            this.toastManager.show("Failed to copy code. Check console for details.", 'error');
+        }
+    }
+
+    runJavaScript() {
+        // Save original console methods
+        const originalConsole = {
+            log: console.log,
+            error: console.error,
+            warn: console.warn,
+            info: console.info,
+            debug: console.debug
+        };
+
+        try {
+            // Show output panel
+            if (this.elements.outputPanel) {
+                this.elements.outputPanel.style.display = 'block';
+            }
+
+            // Clear previous output
+            if (this.elements.outputDiv) {
+                this.elements.outputDiv.textContent = '';
+            }
+
+            // Override console methods to capture output
+            console.log = (...args) => {
+                const message = args.map(arg =>
+                    typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+                ).join(' ');
+
+                if (this.elements.outputDiv) {
+                    const logLine = document.createElement('div');
+                    logLine.textContent = message;
+                    this.elements.outputDiv.appendChild(logLine);
+                }
+                originalConsole.log(...args);
+            };
+
+            // Execute the code
+            const code = this.editor.getValue();
+            const result = new Function(code)();
+
+            // Display the return value if any
+            if (result !== undefined) {
+                const returnLine = document.createElement('div');
+                returnLine.textContent = `Return: ${JSON.stringify(result, null, 2)}`;
+                returnLine.style.marginTop = '10px';
+                returnLine.style.fontWeight = 'bold';
+                this.elements.outputDiv.appendChild(returnLine);
+            }
+
+            // Auto-scroll to bottom
+            if (this.elements.outputDiv) {
+                this.elements.outputDiv.scrollTop = this.elements.outputDiv.scrollHeight;
+            }
+
+        } catch (error) {
+            const errorLine = document.createElement('div');
+            errorLine.textContent = `Error: ${error.message}`;
+            errorLine.style.color = '#ff6b6b';
+            if (this.elements.outputDiv) {
+                this.elements.outputDiv.appendChild(errorLine);
+            }
+            console.error('Execution error:', error);
+        } finally {
+            // Restore original console methods
+            Object.assign(console, originalConsole);
+        }
+    }
+
+    clearOutput() {
+        this.outputContent.textContent = '';
+    }
+
+    async safeAIEdit(retries = 3) {
+        if (this.isProcessing) {
+            this.toastManager.show("Already processing a request", 'error');
+            return;
+        }
+
+        const validated = this.validateInputs();
+        if (!validated) return;
+
+        const { funcName, instruction } = validated;
+        this.isProcessing = true;
+        this.elements.applyButton.disabled = true;
+        this.elements.applyButton.textContent = "Processing...";
+        this.elements.applyButton.classList.add('loading');
+
+        const code = this.editor.getValue();
+
+        for (let attempt = 1; attempt <= retries; attempt++) {
+            try {
+                this.toastManager.show(`Attempt ${attempt}/${retries}: Processing...`);
+
+                // Extract function
+                const funcCode = await this.extractFunction(funcName, code);
+
+                // Request AI edit
+                const editResp = await this.requestAIEdit(funcCode, instruction);
+
+                // Validate JavaScript syntax
+                if (this.validateJavaScript(editResp)) {
+                    this.showPreviewModal(funcCode, editResp);
+                    this.elements.applyButton.disabled = false;
+                    this.elements.applyButton.textContent = "Apply AI Edit";
+                    this.elements.applyButton.classList.remove('loading');
+                    return;
+                } else {
+                    throw new Error("AI produced invalid JavaScript syntax");
+                }
+            } catch (err) {
+                console.error(`Attempt ${attempt} failed:`, err);
+
+                if (attempt === retries) {
+                    this.toastManager.show("AI failed to produce valid code after all retries.", 'error');
+                    this.resetProcessingState();
+                } else {
+                    this.toastManager.show(`Attempt ${attempt} failed: ${err.message}`, 'error');
+                    // Wait a bit before retrying
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                }
+            }
+        }
+    }
+}
+
+// Initialize the application when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+    new AIEditorApp();
+});
+
+</script>
+
+<style>
+
 </style>
 </body>
 </html>
