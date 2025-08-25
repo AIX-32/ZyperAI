@@ -7,424 +7,461 @@
 <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdn.jsdelivr.net/npm/monaco-editor@0.41.0/min/vs/editor/editor.main.css">
 <style>
 :root {
-  /* Color system - Material Design 3 (boosted contrast) */
-  --md-sys-color-primary: #8660d6; /* brighter purple */
-  --md-sys-color-on-primary: #FFFFFF;
-  --md-sys-color-primary-container: #EBDDFF;
-  --md-sys-color-on-primary-container: #23005E;
+  --primary-dark: #1A1528;
+  --primary: #2D2640;
+  --primary-light: #3A3250;
+  --accent: #8A63D2;
+  --accent-light: #9D7AE5;
+  --text-primary: #FFFFFF;
+  --text-secondary: #C8C2D8;
+  --outline: #504768;
+  --success: #5CE1B5;
+  --warning: #FFD166;
+  --error: #FF6B6B;
+  --spacing-xs: 6px;
+  --spacing-sm: 20px;
+  --spacing-md: 14px;
+  --spacing-lg: 18px;
+  --spacing-xl: 26px;
+  --radius-sm: 14px;
+  --radius-md: 18px;
+  --radius-lg: 22px;
+  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-  --md-sys-color-secondary: #7C738C; /* stronger secondary */
-  --md-sys-color-on-secondary: #FFFFFF;
-  --md-sys-color-secondary-container: #F2E9FC;
-  --md-sys-color-on-secondary-container: #241A35;
-
-  --md-sys-color-tertiary: #A05F72; /* warmer, more vivid */
-  --md-sys-color-on-tertiary: #FFFFFF;
-  --md-sys-color-tertiary-container: #FFE0EA;
-  --md-sys-color-on-tertiary-container: #3C1827;
-
-  --md-sys-color-error: #E04337; /* brighter red */
-  --md-sys-color-on-error: #FFFFFF;
-  --md-sys-color-error-container: #FCE4E2;
-  --md-sys-color-on-error-container: #5A1210;
-
-  /* BIG contrast bump on backgrounds/surfaces */
-  --md-sys-color-background: #35313C;       /* was #2A2730 */
-  --md-sys-color-on-background: #FAF7FD;    /* near-white text */
-
-  --md-sys-color-surface: #3E3A46;          /* lighter, distinct from bg */
-  --md-sys-color-on-surface: #FFFFFF;
-
-  --md-sys-color-surface-variant: #6A6372;  /* lighter variant */
-  --md-sys-color-on-surface-variant: #F0EAF6; 
-
-  --md-sys-color-outline: #B6AFC0;          /* clearer, more visible */
-  --md-sys-color-shadow: #000000;
-
-  /* Elevation */
-  --md-elevation-1: 0px 1px 3px 1px rgba(0, 0, 0, 0.12), 0px 1px 2px rgba(0, 0, 0, 0.25);
-  --md-elevation-2: 0px 2px 6px 2px rgba(0, 0, 0, 0.12), 0px 1px 2px rgba(0, 0, 0, 0.25);
-  --md-elevation-3: 0px 4px 8px 3px rgba(0, 0, 0, 0.12), 0px 1px 3px rgba(0, 0, 0, 0.25);
-
-  /* Shape */
-  --md-shape-corner-extra-small: 4px;
-  --md-shape-corner-small: 8px;
-  --md-shape-corner-medium: 12px;
-  --md-shape-corner-large: 16px;
-  --md-shape-corner-extra-large: 28px;
-  --md-shape-corner-full: 999px;
-
-  /* Typography */
-  --md-sys-typescale-body-large-font: 'Roboto', sans-serif;
-  --md-sys-typescale-body-large-weight: 400;
-  --md-sys-typescale-body-large-size: 16px;
-  --md-sys-typescale-body-large-line-height: 24px;
-  --md-sys-typescale-body-large-tracking: 0.5px;
-
-  --md-sys-typescale-body-medium-font: 'Roboto', sans-serif;
-  --md-sys-typescale-body-medium-weight: 400;
-  --md-sys-typescale-body-medium-size: 14px;
-  --md-sys-typescale-body-medium-line-height: 20px;
-  --md-sys-typescale-body-medium-tracking: 0.25px;
-
-  --md-sys-typescale-body-small-font: 'Roboto', sans-serif;
-  --md-sys-typescale-body-small-weight: 400;
-  --md-sys-typescale-body-small-size: 12px;
-  --md-sys-typescale-body-small-line-height: 16px;
-  --md-sys-typescale-body-small-tracking: 0.4px;
-
-  --md-sys-typescale-label-large-font: 'Roboto', sans-serif;
-  --md-sys-typescale-label-large-weight: 500;
-  --md-sys-typescale-label-large-size: 14px;
-  --md-sys-typescale-label-large-line-height: 20px;
-  --md-sys-typescale-label-large-tracking: 0.1px;
-
-  --md-sys-typescale-title-medium-font: 'Roboto', sans-serif;
-  --md-sys-typescale-title-medium-weight: 500;
-  --md-sys-typescale-title-medium-size: 16px;
-  --md-sys-typescale-title-medium-line-height: 24px;
-  --md-sys-typescale-title-medium-tracking: 0.15px;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin: 0;
-  background: var(--md-sys-color-background);
-  color: var(--md-sys-color-on-background);
-  font-family: var(--md-sys-typescale-body-large-font);
-  font-size: var(--md-sys-typescale-body-large-size);
-  font-weight: var(--md-sys-typescale-body-large-weight);
-  line-height: var(--md-sys-typescale-body-large-line-height);
-  letter-spacing: var(--md-sys-typescale-body-large-tracking);
+  height: 100vh;
+  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   display: flex;
   flex-direction: column;
-  height: 100vh;
   overflow: hidden;
+  line-height: 1.5;
 }
 
+/* TOPBAR */
+#topBar {
+  height: 56px;
+  background: var(--primary);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--spacing-xl);
+  font-size: 14px;
+  border-bottom: 1px solid var(--outline);
+  flex-shrink: 0;
+  font-weight: 500;
+  backdrop-filter: blur(8px);
+}
+
+/* MAIN SPLIT AREA */
+#mainArea {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  background: #1E1A2F;
+}
+
+/* SIDEBAR */
+#sidebar {
+  width: 340px;
+  background: var(--primary);
+  color: var(--text-secondary);
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  font-family: 'Fira Code', monospace;
+  border: 1px solid var(--outline);
+  flex-shrink: 0;
+  overflow-y: auto;
+  margin: var(--spacing-xl);
+  border-radius: var(--radius-lg);
+}
+
+#sidebar button {
+  background: transparent;
+  color: var(--text-secondary);
+  border: none;
+  text-align: left;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+#sidebar button:hover {
+  background: var(--primary-light);
+  color: var(--text-primary);
+}
+
+/* AI Controls Section */
+#aiControls {
+  margin-top: var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.controls-row {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+/* EDITOR AREA */
+#editorWrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  background: var(--primary-dark);
+}
+
+/* EDITOR */
 #editor {
   flex: 1;
-  border-bottom: 1px solid var(--md-sys-color-outline);
-  min-height: 200px;
+  background: #1E1A2F;
+  color: #E8E4F2;
+  font-family: 'Fira Code', monospace;
+  font-size: 14px;
+  padding: var(--spacing-xl);
+  overflow: auto;
+  line-height: 1.6;
+  border: none;
 }
 
+/* CONTROLS */
 #controls {
+  background: var(--primary);
+  padding: var(--spacing-lg);
   display: flex;
   flex-direction: column;
-  padding: 16px;
-  background: var(--md-sys-color-surface);
-  box-shadow: var(--md-elevation-1);
-  gap: 12px;
+  gap: var(--spacing-md);
+  border-top: 1px solid var(--outline);
 }
 
 #instruction, #funcName {
-  padding: 16px;
-  border-radius: var(--md-shape-corner-medium);
-  border: 1px solid var(--md-sys-color-outline);
-  background: var(--md-sys-color-surface);
-  color: var(--md-sys-color-on-surface);
-  font-size: var(--md-sys-typescale-body-medium-size);
-  width: 100%;
-  box-sizing: border-box;
+  padding: var(--spacing-md);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  background: var(--primary-light);
+  color: var(--text-primary);
+  border: 1px solid var(--outline);
+  border-radius: var(--radius-md);
   resize: vertical;
-  min-height: 56px;
-  transition: all 0.2s ease;
+  width: 100%;
+  transition: var(--transition);
 }
 
 #instruction:focus, #funcName:focus {
   outline: none;
-  border-color: var(--md-sys-color-primary);
-  box-shadow: 0 0 0 1px var(--md-sys-color-primary);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(138, 99, 210, 0.2);
 }
 
+/* BUTTONS */
 button {
-  position: relative;
-  overflow: hidden;
-  padding: 10px 24px;
+  background: #8e51ff !important;
+  color: white !important;
+  padding: var(--spacing-md) var(--spacing-lg)!important;
   border: none;
-  border-radius: var(--md-shape-corner-extra-large);
-  font-family: var(--md-sys-typescale-label-large-font);
-  font-size: var(--md-sys-typescale-label-large-size);
-  font-weight: var(--md-sys-typescale-label-large-weight);
-  line-height: var(--md-sys-typescale-label-large-line-height);
-  letter-spacing: var(--md-sys-typescale-label-large-tracking);
-  text-transform: none;
+  border-radius: var(--radius-sm)!important;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
-  min-height: 40px;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  gap: var(--spacing-sm);
 }
 
-/* Ripple effect */
-button::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 5px;
-  height: 5px;
-  background: rgba(255, 255, 255, 0.5);
-  opacity: 0;
-  border-radius: 100%;
-  transform: scale(1, 1) translate(-50%);
-  transform-origin: 50% 50%;
+button:hover {
+  background: color-mix(in srgb, var(--primary-light) 90%, white);
+  transform: translateY(-1px);
 }
 
-button:focus:not(:active)::after {
-  animation: ripple 0.6s ease-out;
-}
-
-@keyframes ripple {
-  0% {
-    transform: scale(0, 0);
-    opacity: 0.5;
-  }
-  100% {
-    transform: scale(30, 30);
-    opacity: 0;
-  }
+button:active {
+  transform: translateY(0);
 }
 
 #apply {
   background: var(--md-sys-color-primary);
   color: var(--md-sys-color-on-primary);
-  box-shadow: var(--md-elevation-1);
+  border: 1px solid var(--md-sys-color-outline);
 }
 
 #apply:hover {
-  background: color-mix(in srgb, var(--md-sys-color-primary) 90%, black);
-  box-shadow: var(--md-elevation-2);
-}
-
-#apply:active {
-  background: color-mix(in srgb, var(--md-sys-color-primary) 80%, black);
-  box-shadow: var(--md-elevation-1);
-}
-
-#copy {
-  background: var(--md-sys-color-secondary-container);
-  color: var(--md-sys-color-on-secondary-container);
-}
-
-#copy:hover {
-  background: color-mix(in srgb, var(--md-sys-color-secondary-container) 90%, black);
-}
-
-#copy:active {
-  background: color-mix(in srgb, var(--md-sys-color-secondary-container) 80%, black);
-}
-
-#run {
-  background: var(--md-sys-color-tertiary-container);
-  color: var(--md-sys-color-on-tertiary-container);
-}
-
-#run:hover {
-  background: color-mix(in srgb, var(--md-sys-color-tertiary-container) 90%, black);
-}
-
-#run:active {
-  background: color-mix(in srgb, var(--md-sys-color-tertiary-container) 80%, black);
-}
-
-.toast {
-  position: fixed;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--md-sys-color-surface);
-  color: var(--md-sys-color-on-surface);
-  padding: 16px;
-  border-radius: var(--md-shape-corner-medium);
-  opacity: 0;
-  transition: opacity 0.3s, transform 0.3s;
-  z-index: 1000;
-  box-shadow: var(--md-elevation-3);
-  min-width: 280px;
-  max-width: 80%;
-  text-align: center;
-}
-
-.toast.show {
-  opacity: 1;
-  transform: translate(-50%, -16px);
-}
-
-.toast.success {
-  background: var(--md-sys-color-secondary-container);
-  color: var(--md-sys-color-on-secondary-container);
-}
-
-.toast.error {
-  background: var(--md-sys-color-error-container);
-  color: var(--md-sys-color-on-error-container);
-}
-
-.toast.info {
   background: var(--md-sys-color-primary-container);
   color: var(--md-sys-color-on-primary-container);
 }
 
-.myHighlight {
-  background: rgba(103, 80, 164, 0.2);
-}
-
-#previewModal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: var(--md-sys-color-surface);
-  padding: 24px;
-  border-radius: var(--md-shape-corner-large);
-  display: none;
-  max-width: 90%;
-  max-height: 80%;
-  overflow: auto;
-  z-index: 1001;
-  color: var(--md-sys-color-on-surface);
-  box-shadow: var(--md-elevation-3);
-  width: 80%;
+#copy {
+  background: #8A63D2 !important;
+  color: white !important;
   border: 1px solid var(--md-sys-color-outline);
 }
 
-#previewModal pre {
-  background: var(--md-sys-color-surface-variant);
-  color: var(--md-sys-color-on-surface-variant);
-  padding: 16px;
-  border-radius: var(--md-shape-corner-medium);
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  max-height: 300px;
-  overflow: auto;
-  font-family: 'Roboto Mono', monospace;
-  font-size: var(--md-sys-typescale-body-small-size);
+#copy:hover {
+  background: #8A63D2 !important;
+  color: white !important;
 }
 
-#previewModal button {
-  margin-top: 16px;
-  width: 100%;
+#run {
+  background: #8A63D2 !important;
+  color: white !important;
+  border: 1px solid var(--md-sys-color-outline) !important;
 }
 
+#run:hover {
+  background: #8A63D2 !important;
+  color: white !important;
+}
+
+#clearOutput {
+  background: rgba(255, 107, 107, 0.2);
+  color: #ff6b6b;
+  padding: 4px 12px;
+  font-size: 11px;
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  border-radius: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#clearOutput:hover {
+  background: rgba(255, 107, 107, 0.3);
+  transform: translateY(-1px);
+}
+
+#clearOutput:active {
+  transform: translateY(0);
+}
+
+#clearOutput::before {
+  content: '✕';
+  font-size: 10px;
+  line-height: 1;
+}
+
+/* OUTPUT PANEL */
+/* Output Panel Styles */
 #outputPanel {
-  background: var(--md-sys-color-surface-variant);
+  background: #1e1e2f;
+  color: #e0dfff;
+  font-family: 'Fira Code', monospace;
+  font-size: 14px;
+  padding: 0;
   border-top: 1px solid var(--md-sys-color-outline);
-  padding: 16px;
-  max-height: 200px;
+  max-height: 300px;
   overflow-y: auto;
-  font-family: 'Roboto Mono', monospace;
-  font-size: var(--md-sys-typescale-body-small-size);
   display: none;
-}
-
-#outputContent {
-  white-space: pre-wrap;
-  color: var(--md-sys-color-on-surface-variant);
+  position: relative;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
 }
 
 #outputHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid var(--md-sys-color-outline);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(5px);
 }
 
-#clearOutput {
-  background: transparent;
-  color: var(--md-sys-color-primary);
-  border: 1px solid var(--md-sys-color-outline);
-  padding: 6px 12px;
-  font-size: var(--md-sys-typescale-body-small-size);
-  margin: 0;
-  border-radius: var(--md-shape-corner-small);
+#outputHeader strong {
+  color: #e0dfff;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-#clearOutput:hover {
-  background: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent);
+#outputContent {
+  padding: 16px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-x: auto;
+  font-size: 13px;
 }
 
-.controls-row {
-  display: flex;
-  gap: 12px;
+/* Syntax highlighting for output */
+#outputContent .token.comment,
+#outputContent .token.prolog,
+#outputContent .token.doctype,
+#outputContent .token.cdata {
+  color: #6A9955;
 }
 
-.controls-row button {
-  flex: 1;
+#outputContent .token.punctuation {
+  color: #d4d4d4;
 }
 
-.loading {
-  position: relative;
-  color: transparent !important;
+#outputContent .token.string,
+#outputContent .token.attr-value {
+  color: #ce9178;
 }
 
-.loading::after {
-  content: '';
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  top: 50%;
+#outputContent .token.keyword,
+#outputContent .token.operator,
+#outputContent .token.boolean,
+#outputContent .token.number {
+  color: #569cd6;
+}
+
+#outputContent .token.function {
+  color: #dcdcaa;
+}
+
+#outputContent .token.error {
+  color: #f44747;
+}
+
+/* TOASTS */
+.toast {
+  position: fixed;
+  bottom: 24px;
   left: 50%;
-  margin-top: -10px;
-  margin-left: -10px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  border-top-color: currentColor;
-  animation: spin 0.8s linear infinite;
+  transform: translateX(-50%);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--radius-md);
+  background: var(--primary-light);
+  color: var(--text-primary);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transition: var(--transition);
+  z-index: 1000;
+  text-align: center;
+  font-size: 14px;
+  border: 1px solid var(--outline);
+  backdrop-filter: blur(8px);
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-10px);
 }
 
-/* Scrollbar styling */
+/* SCROLLBARS */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--md-sys-color-surface-variant);
-  border-radius: var(--md-shape-corner-full);
+  background: var(--primary);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--md-sys-color-outline);
-  border-radius: var(--md-shape-corner-full);
+  background: var(--outline);
+  border-radius: var(--radius-full);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: color-mix(in srgb, var(--md-sys-color-outline) 80%, white);
+  background: var(--accent);
+}
+
+/* Preview Modal */
+#previewModal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--primary);
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.3);
+  z-index: 1001;
+  width: 80%;
+  max-width: 700px;
+  max-height: 80vh;
+  overflow: auto;
+  border: 1px solid var(--outline);
+  backdrop-filter: blur(12px);
 }
 </style>
 </head>
 <body>
-<div id="editor"></div>
-<div id="outputPanel">
-    <div id="outputHeader">
-        <strong>Output</strong>
-        <button id="clearOutput">Clear</button>
+  <!-- TOP BAR -->
+  <div id="topBar">ZyperAI</div>
+
+  <!-- MAIN LAYOUT -->
+  <div id="mainArea">
+    
+    <!-- SIDEBAR -->
+    <div id="sidebar">
+      <!-- AI Controls -->
+      <div id="aiControls">
+        <input type="text" id="funcName" placeholder="Function name (e.g., add)">
+        <textarea id="instruction" placeholder="Describe your change..." rows="4"></textarea>
+        <div class="controls-row">
+          <button id="apply">Apply</button>
+          <button id="run">Run</button>
+          <button id="copy">Copy</button>
+        </div>
+      </div>
     </div>
-    <div id="outputContent"></div>
-</div>
-<div id="controls">
-    <input type="text" id="funcName" placeholder="Function name to edit (e.g., add)">
-    <textarea id="instruction" placeholder="Describe your change (e.g., remove extra return, repeat Bye 10 times)"></textarea>
-    <div class="controls-row">
-        <button id="apply">Apply AI Edit</button>
-        <button id="run">Run JavaScript</button>
-        <button id="copy">Copy Code</button>
+
+    <!-- MAIN WORKSPACE -->
+    <div id="editorWrapper">
+      
+      <!-- CODE EDITOR -->
+      <div id="editor"></div>
+
+      <!-- OUTPUT PANEL -->
+      <div id="outputPanel">
+        <div id="outputHeader">
+          <strong>Console Output</strong>
+          <button id="clearOutput" title="Clear console">Clear</button>
+        </div>
+        <div id="outputContent"></div>
+      </div>
     </div>
-</div>
-<div id="toast" class="toast"></div>
-<div id="previewModal">
-    <h3>Preview Changes</h3>
-    <pre id="previewCode"></pre>
-    <button id="applyPreview">Apply Changes</button>
-    <button id="cancelPreview">Cancel</button>
-</div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="toast"></div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.41.0/min/vs/loader.js"></script>
 <script src="https://js.puter.com/v2/"></script>
+<!-- Preview Modal -->
+<div id="previewModal" class="preview-modal">
+  <div class="preview-content">
+    <h3>Preview Changes</h3>
+    <pre id="previewCode"></pre>
+    <div class="preview-actions">
+      <button id="applyPreview">Apply Changes</button>
+      <button id="cancelPreview">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Notification -->
+<div id="toast" class="toast"></div>
+
 <script>
 // Toast notification system
 class ToastManager {
@@ -659,13 +696,24 @@ ${funcCode}
     applyEdit() {
         try {
             const fullCode = this.editor.getValue();
-            const updatedCode = fullCode.replace(this.lastFunctionCode, this.lastEditResponse);
-            this.editor.setValue(updatedCode);
+            // Create a regex pattern that handles whitespace and newlines
+            const escapedCode = this.lastFunctionCode
+                .replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+                .replace(/\s+/g, '\\s*');
+            
+            const regex = new RegExp(escapedCode, 's'); // 's' flag makes . match newlines
+            
+            if (!regex.test(fullCode)) {
+                throw new Error('Could not find the original function in the editor. The code may have been modified.');
+            }
+            
+            const updatedCode = fullCode.replace(regex, this.lastEditResponse);
+            this.editor.getModel().setValue(updatedCode);
             this.elements.previewModal.style.display = 'none';
             this.toastManager.show("Function edited successfully!", 'success');
         } catch (error) {
             console.error("Error applying edit:", error);
-            this.toastManager.show("Failed to apply edit. Check console for details.", 'error');
+            this.toastManager.show(`Failed to apply edit: ${error.message}`, 'error');
         } finally {
             this.resetProcessingState();
         }
@@ -798,5 +846,115 @@ document.addEventListener('DOMContentLoaded', () => {
     new AIEditorApp();
 });
 </script>
+
+<style>
+/* Preview Modal Styles */
+.preview-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.preview-content {
+    background: var(--md-sys-color-surface);
+    padding: 24px;
+    border-radius: 12px;
+    width: 80%;
+    max-width: 800px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.preview-content h3 {
+    margin-top: 0;
+    color: var(--md-sys-color-on-surface);
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--md-sys-color-outline);
+}
+
+#previewCode {
+    background: #1e1e2f;
+    padding: 16px;
+    border-radius: 8px;
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    color: #e0dfff;
+    margin: 16px 0;
+    white-space: pre-wrap;
+    max-height: 50vh;
+    overflow-y: auto;
+}
+
+.preview-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--md-sys-color-outline);
+}
+
+/* Toast Notification Styles */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 1001;
+    pointer-events: none;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-10px);
+}
+
+.toast.success {
+    background: var(--success);
+}
+
+.toast.error {
+    background: var(--error);
+}
+
+/* Loading state for buttons */
+button.loading {
+    position: relative;
+    color: transparent !important;
+}
+
+button.loading::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 50%;
+    left: 50%;
+    margin: -8px 0 0 -8px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+</style>
 </body>
 </html>
