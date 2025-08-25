@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AI Code Editor</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdn.jsdelivr.net/npm/monaco-editor@0.41.0/min/vs/editor/editor.main.css">
+<style>
+:root {
+  /* Color system - Material Design 3 (boosted contrast) */
+  --md-sys-color-primary: #8660d6; /* brighter purple */
+  --md-sys-color-on-primary: #FFFFFF;
+  --md-sys-color-primary-container: #EBDDFF;
+  --md-sys-color-on-primary-container: #23005E;
+
+  --md-sys-color-secondary: #7C738C; /* stronger secondary */
+  --md-sys-color-on-secondary: #FFFFFF;
+  --md-sys-color-secondary-container: #F2E9FC;
+  --md-sys-color-on-secondary-container: #241A35;
+
+  --md-sys-color-tertiary: #A05F72; /* warmer, more vivid */
+  --md-sys-color-on-tertiary: #FFFFFF;
+  --md-sys-color-tertiary-container: #FFE0EA;
+  --md-sys-color-on-tertiary-container: #3C1827;
+
+  --md-sys-color-error: #E04337; /* brighter red */
+  --md-sys-color-on-error: #FFFFFF;
+  --md-sys-color-error-container: #FCE4E2;
+  --md-sys-color-on-error-container: #5A1210;
+
+  /* BIG contrast bump on backgrounds/surfaces */
+  --md-sys-color-background: #35313C;       /* was #2A2730 */
+  --md-sys-color-on-background: #FAF7FD;    /* near-white text */
+
+  --md-sys-color-surface: #3E3A46;          /* lighter, distinct from bg */
+  --md-sys-color-on-surface: #FFFFFF;
+
+  --md-sys-color-surface-variant: #6A6372;  /* lighter variant */
+  --md-sys-color-on-surface-variant: #F0EAF6; 
+
+  --md-sys-color-outline: #B6AFC0;          /* clearer, more visible */
+  --md-sys-color-shadow: #000000;
+
+  /* Elevation */
+  --md-elevation-1: 0px 1px 3px 1px rgba(0, 0, 0, 0.12), 0px 1px 2px rgba(0, 0, 0, 0.25);
+  --md-elevation-2: 0px 2px 6px 2px rgba(0, 0, 0, 0.12), 0px 1px 2px rgba(0, 0, 0, 0.25);
+  --md-elevation-3: 0px 4px 8px 3px rgba(0, 0, 0, 0.12), 0px 1px 3px rgba(0, 0, 0, 0.25);
+
+  /* Shape */
+  --md-shape-corner-extra-small: 4px;
+  --md-shape-corner-small: 8px;
+  --md-shape-corner-medium: 12px;
+  --md-shape-corner-large: 16px;
+  --md-shape-corner-extra-large: 28px;
+  --md-shape-corner-full: 999px;
+
+  /* Typography */
+  --md-sys-typescale-body-large-font: 'Roboto', sans-serif;
+  --md-sys-typescale-body-large-weight: 400;
+  --md-sys-typescale-body-large-size: 16px;
+  --md-sys-typescale-body-large-line-height: 24px;
+  --md-sys-typescale-body-large-tracking: 0.5px;
+
+  --md-sys-typescale-body-medium-font: 'Roboto', sans-serif;
+  --md-sys-typescale-body-medium-weight: 400;
+  --md-sys-typescale-body-medium-size: 14px;
+  --md-sys-typescale-body-medium-line-height: 20px;
+  --md-sys-typescale-body-medium-tracking: 0.25px;
+
+  --md-sys-typescale-body-small-font: 'Roboto', sans-serif;
+  --md-sys-typescale-body-small-weight: 400;
+  --md-sys-typescale-body-small-size: 12px;
+  --md-sys-typescale-body-small-line-height: 16px;
+  --md-sys-typescale-body-small-tracking: 0.4px;
+
+  --md-sys-typescale-label-large-font: 'Roboto', sans-serif;
+  --md-sys-typescale-label-large-weight: 500;
+  --md-sys-typescale-label-large-size: 14px;
+  --md-sys-typescale-label-large-line-height: 20px;
+  --md-sys-typescale-label-large-tracking: 0.1px;
+
+  --md-sys-typescale-title-medium-font: 'Roboto', sans-serif;
+  --md-sys-typescale-title-medium-weight: 500;
+  --md-sys-typescale-title-medium-size: 16px;
+  --md-sys-typescale-title-medium-line-height: 24px;
+  --md-sys-typescale-title-medium-tracking: 0.15px;
+}
+
+body {
+  margin: 0;
+  background: var(--md-sys-color-background);
+  color: var(--md-sys-color-on-background);
+  font-family: var(--md-sys-typescale-body-large-font);
+  font-size: var(--md-sys-typescale-body-large-size);
+  font-weight: var(--md-sys-typescale-body-large-weight);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  letter-spacing: var(--md-sys-typescale-body-large-tracking);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#editor {
+  flex: 1;
+  border-bottom: 1px solid var(--md-sys-color-outline);
+  min-height: 200px;
+}
+
+#controls {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  background: var(--md-sys-color-surface);
+  box-shadow: var(--md-elevation-1);
+  gap: 12px;
+}
+
+#instruction, #funcName {
+  padding: 16px;
+  border-radius: var(--md-shape-corner-medium);
+  border: 1px solid var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: var(--md-sys-typescale-body-medium-size);
+  width: 100%;
+  box-sizing: border-box;
+  resize: vertical;
+  min-height: 56px;
+  transition: all 0.2s ease;
+}
+
+#instruction:focus, #funcName:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  box-shadow: 0 0 0 1px var(--md-sys-color-primary);
+}
+
+button {
+  position: relative;
+  overflow: hidden;
+  padding: 10px 24px;
+  border: none;
+  border-radius: var(--md-shape-corner-extra-large);
+  font-family: var(--md-sys-typescale-label-large-font);
+  font-size: var(--md-sys-typescale-label-large-size);
+  font-weight: var(--md-sys-typescale-label-large-weight);
+  line-height: var(--md-sys-typescale-label-large-line-height);
+  letter-spacing: var(--md-sys-typescale-label-large-tracking);
+  text-transform: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 40px;
+}
+
+/* Ripple effect */
+button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1, 1) translate(-50%);
+  transform-origin: 50% 50%;
+}
+
+button:focus:not(:active)::after {
+  animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0, 0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(30, 30);
+    opacity: 0;
+  }
+}
+
+#apply {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  box-shadow: var(--md-elevation-1);
+}
+
+#apply:hover {
+  background: color-mix(in srgb, var(--md-sys-color-primary) 90%, black);
+  box-shadow: var(--md-elevation-2);
+}
+
+#apply:active {
+  background: color-mix(in srgb, var(--md-sys-color-primary) 80%, black);
+  box-shadow: var(--md-elevation-1);
+}
+
+#copy {
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+#copy:hover {
+  background: color-mix(in srgb, var(--md-sys-color-secondary-container) 90%, black);
+}
+
+#copy:active {
+  background: color-mix(in srgb, var(--md-sys-color-secondary-container) 80%, black);
+}
+
+#run {
+  background: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
+}
+
+#run:hover {
+  background: color-mix(in srgb, var(--md-sys-color-tertiary-container) 90%, black);
+}
+
+#run:active {
+  background: color-mix(in srgb, var(--md-sys-color-tertiary-container) 80%, black);
+}
+
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  padding: 16px;
+  border-radius: var(--md-shape-corner-medium);
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 1000;
+  box-shadow: var(--md-elevation-3);
+  min-width: 280px;
+  max-width: 80%;
+  text-align: center;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, -16px);
+}
+
+.toast.success {
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+.toast.error {
+  background: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+}
+
+.toast.info {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.myHighlight {
+  background: rgba(103, 80, 164, 0.2);
+}
+
+#previewModal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--md-sys-color-surface);
+  padding: 24px;
+  border-radius: var(--md-shape-corner-large);
+  display: none;
+  max-width: 90%;
+  max-height: 80%;
+  overflow: auto;
+  z-index: 1001;
+  color: var(--md-sys-color-on-surface);
+  box-shadow: var(--md-elevation-3);
+  width: 80%;
+  border: 1px solid var(--md-sys-color-outline);
+}
+
+#previewModal pre {
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  padding: 16px;
+  border-radius: var(--md-shape-corner-medium);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-height: 300px;
+  overflow: auto;
+  font-family: 'Roboto Mono', monospace;
+  font-size: var(--md-sys-typescale-body-small-size);
+}
+
+#previewModal button {
+  margin-top: 16px;
+  width: 100%;
+}
+
+#outputPanel {
+  background: var(--md-sys-color-surface-variant);
+  border-top: 1px solid var(--md-sys-color-outline);
+  padding: 16px;
+  max-height: 200px;
+  overflow-y: auto;
+  font-family: 'Roboto Mono', monospace;
+  font-size: var(--md-sys-typescale-body-small-size);
+  display: none;
+}
+
+#outputContent {
+  white-space: pre-wrap;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+#outputHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+#clearOutput {
+  background: transparent;
+  color: var(--md-sys-color-primary);
+  border: 1px solid var(--md-sys-color-outline);
+  padding: 6px 12px;
+  font-size: var(--md-sys-typescale-body-small-size);
+  margin: 0;
+  border-radius: var(--md-shape-corner-small);
+}
+
+#clearOutput:hover {
+  background: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent);
+}
+
+.controls-row {
+  display: flex;
+  gap: 12px;
+}
+
+.controls-row button {
+  flex: 1;
+}
+
+.loading {
+  position: relative;
+  color: transparent !important;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  left: 50%;
+  margin-top: -10px;
+  margin-left: -10px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: currentColor;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--md-sys-color-surface-variant);
+  border-radius: var(--md-shape-corner-full);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--md-sys-color-outline);
+  border-radius: var(--md-shape-corner-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--md-sys-color-outline) 80%, white);
+}
+</style>
+</head>
+<body>
+<div id="editor"></div>
+<div id="outputPanel">
+    <div id="outputHeader">
+        <strong>Output</strong>
+        <button id="clearOutput">Clear</button>
+    </div>
+    <div id="outputContent"></div>
+</div>
+<div id="controls">
+    <input type="text" id="funcName" placeholder="Function name to edit (e.g., add)">
+    <textarea id="instruction" placeholder="Describe your change (e.g., remove extra return, repeat Bye 10 times)"></textarea>
+    <div class="controls-row">
+        <button id="apply">Apply AI Edit</button>
+        <button id="run">Run JavaScript</button>
+        <button id="copy">Copy Code</button>
+    </div>
+</div>
+<div id="toast" class="toast"></div>
+<div id="previewModal">
+    <h3>Preview Changes</h3>
+    <pre id="previewCode"></pre>
+    <button id="applyPreview">Apply Changes</button>
+    <button id="cancelPreview">Cancel</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.41.0/min/vs/loader.js"></script>
+<script src="https://js.puter.com/v2/"></script>
+<script>
+// Toast notification system
+class ToastManager {
+    constructor() {
+        this.toast = document.getElementById('toast');
+        this.hideTimeout = null;
+    }
+
+    show(message, type = 'info') {
+        // Clear any pending hide timeout
+        if (this.hideTimeout) {
+            clearTimeout(this.hideTimeout);
+            this.hideTimeout = null;
+        }
+
+        // Set message and classes
+        this.toast.textContent = message;
+        this.toast.className = `toast show ${type}`;
+
+        // Auto-hide after 3 seconds
+        this.hideTimeout = setTimeout(() => this.hide(), 3000);
+    }
+
+    hide() {
+        this.toast.classList.remove('show');
+        if (this.hideTimeout) {
+            clearTimeout(this.hideTimeout);
+            this.hideTimeout = null;
+        }
+    }
+}
+
+// Main application controller
+class AIEditorApp {
+    constructor() {
+        this.editor = null;
+        this.isProcessing = false;
+        this.lastFunctionCode = '';
+        this.lastEditResponse = '';
+        this.toastManager = new ToastManager();
+        this.outputPanel = document.getElementById('outputPanel');
+        this.outputContent = document.getElementById('outputContent');
+        
+        this.initializeElements();
+        this.initializeMonacoEditor();
+        this.bindEvents();
+    }
+
+    initializeElements() {
+        this.elements = {
+            funcNameInput: document.getElementById('funcName'),
+            instructionInput: document.getElementById('instruction'),
+            applyButton: document.getElementById('apply'),
+            copyButton: document.getElementById('copy'),
+            runButton: document.getElementById('run'),
+            previewCodeElement: document.getElementById('previewCode'),
+            previewModal: document.getElementById('previewModal'),
+            applyPreviewButton: document.getElementById('applyPreview'),
+            cancelPreviewButton: document.getElementById('cancelPreview'),
+            clearOutputButton: document.getElementById('clearOutput')
+        };
+    }
+
+    initializeMonacoEditor() {
+        // Configure and initialize Monaco Editor
+        require.config({ 
+            paths: { 
+                'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@0.41.0/min/vs' 
+            } 
+        });
+        
+        require(['vs/editor/editor.main'], () => {
+            this.editor = monaco.editor.create(document.getElementById('editor'), {
+                value: `// Example dependent function
+function greet(name) {
+    return "Hello " + name;
+}
+
+// Function we want AI to edit
+function add(a, b) {  
+    return a + b;
+}
+
+// Try calling functions to test
+console.log(greet("World"));
+console.log("2 + 3 =", add(2, 3));`,
+                language: 'javascript',
+                theme: 'vs-dark',
+                automaticLayout: true,
+                fontSize: 14,
+                minimap: { enabled: false }
+            });
+        });
+    }
+
+    bindEvents() {
+        // Apply AI edit
+        this.elements.applyButton.addEventListener('click', () => this.safeAIEdit(3));
+        
+        // Copy code to clipboard
+        this.elements.copyButton.addEventListener('click', () => this.copyToClipboard());
+        
+        // Run JavaScript code
+        this.elements.runButton.addEventListener('click', () => this.runJavaScript());
+        
+        // Clear output
+        this.elements.clearOutputButton.addEventListener('click', () => this.clearOutput());
+        
+        // Preview modal actions
+        this.elements.applyPreviewButton.addEventListener('click', () => this.applyEdit());
+        this.elements.cancelPreviewButton.addEventListener('click', () => this.cancelEdit());
+        
+        // Enter key to trigger AI edit
+        this.elements.instructionInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && (e.ctrlKey || e.metaKey) && !this.isProcessing) {
+                e.preventDefault();
+                this.safeAIEdit(3);
+            }
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === this.elements.previewModal) {
+                this.cancelEdit();
+            }
+        });
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                this.runJavaScript();
+            }
+        });
+    }
+
+    validateInputs() {
+        const funcName = this.elements.funcNameInput.value.trim();
+        const instruction = this.elements.instructionInput.value.trim();
+        
+        if (!funcName) {
+            this.toastManager.show("Please enter a function name!", 'error');
+            this.elements.funcNameInput.focus();
+            return false;
+        }
+        
+        if (!instruction) {
+            this.toastManager.show("Please enter an instruction!", 'error');
+            this.elements.instructionInput.focus();
+            return false;
+        }
+        
+        return { funcName, instruction };
+    }
+
+    async extractFunction(funcName, code) {
+        const funcResp = await puter.ai.chat(`
+You are a code assistant. Extract ONLY the function named "${funcName}" from this code:
+${code}
+Respond ONLY with the function code including braces.
+`);
+        
+        const funcCode = (funcResp.text ?? funcResp).toString().trim();
+        if (!funcCode) {
+            throw new Error(`Function "${funcName}" not found in the code`);
+        }
+        
+        // Basic validation to ensure we got a function
+        if (!funcCode.includes('function') && !funcCode.startsWith('const') && !funcCode.startsWith('let')) {
+            throw new Error(`Extracted code doesn't appear to be a function: ${funcCode}`);
+        }
+        
+        return funcCode;
+    }
+
+    async requestAIEdit(funcCode, instruction) {
+        const editRespRaw = await puter.ai.chat(`
+Modify this JavaScript function according to the instruction:
+"${instruction}"
+Do NOT change other parts of the code. Only edit inside this function.
+Ensure there is only one return statement.
+Output valid JS code, no markdown or quotes.
+Original function:
+${funcCode}
+`);
+        
+        const editResp = (editRespRaw.text ?? editRespRaw).toString().trim();
+        
+        // Remove code block markers if present
+        const cleanedResponse = editResp.replace(/^```(javascript|js)?\s*|\s*```$/g, '');
+        
+        if (!cleanedResponse) {
+            throw new Error("AI returned empty edit response");
+        }
+        
+        return cleanedResponse;
+    }
+
+    validateJavaScript(code) {
+        try {
+            // Try to parse the code as a function
+            new Function(code);
+            return true;
+        } catch (error) {
+            console.error("Syntax validation error:", error);
+            return false;
+        }
+    }
+
+    showPreviewModal(originalCode, editedCode) {
+        this.elements.previewCodeElement.textContent = editedCode;
+        
+        // Syntax highlighting for preview if Monaco is available
+        if (typeof monaco !== 'undefined') {
+            monaco.editor.colorize(editedCode, 'javascript', {})
+                .then(html => {
+                    this.elements.previewCodeElement.innerHTML = html;
+                })
+                .catch(err => {
+                    console.warn("Could not colorize preview:", err);
+                    this.elements.previewCodeElement.textContent = editedCode;
+                });
+        }
+        
+        this.elements.previewModal.style.display = 'block';
+        
+        // Store for later use
+        this.lastFunctionCode = originalCode;
+        this.lastEditResponse = editedCode;
+    }
+
+    applyEdit() {
+        try {
+            const fullCode = this.editor.getValue();
+            const updatedCode = fullCode.replace(this.lastFunctionCode, this.lastEditResponse);
+            this.editor.setValue(updatedCode);
+            this.elements.previewModal.style.display = 'none';
+            this.toastManager.show("Function edited successfully!", 'success');
+        } catch (error) {
+            console.error("Error applying edit:", error);
+            this.toastManager.show("Failed to apply edit. Check console for details.", 'error');
+        } finally {
+            this.resetProcessingState();
+        }
+    }
+
+    cancelEdit() {
+        this.elements.previewModal.style.display = 'none';
+        this.toastManager.show("Edit cancelled.");
+        this.resetProcessingState();
+    }
+
+    resetProcessingState() {
+        this.isProcessing = false;
+        this.elements.applyButton.disabled = false;
+        this.elements.applyButton.textContent = "Apply AI Edit";
+        this.elements.applyButton.classList.remove('loading');
+        this.lastFunctionCode = '';
+        this.lastEditResponse = '';
+    }
+
+    async copyToClipboard() {
+        try {
+            await navigator.clipboard.writeText(this.editor.getValue());
+            this.toastManager.show("Code copied to clipboard!", 'success');
+        } catch (err) {
+            console.error("Copy failed:", err);
+            this.toastManager.show("Failed to copy code. Check console for details.", 'error');
+        }
+    }
+
+    runJavaScript() {
+        try {
+            // Show output panel
+            this.outputPanel.style.display = 'block';
+            
+            // Capture console.log outputs
+            const originalConsoleLog = console.log;
+            const logs = [];
+            
+            console.log = (...args) => {
+                logs.push(args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : arg).join(' '));
+                originalConsoleLog.apply(console, args);
+            };
+            
+            // Execute the code
+            const code = this.editor.getValue();
+            const result = new Function(code)();
+            
+            // Restore original console.log
+            console.log = originalConsoleLog;
+            
+            // Display the output
+            let output = '';
+            if (logs.length > 0) {
+                output = logs.join('\n');
+            }
+            
+            if (result !== undefined) {
+                if (output) output += '\n';
+                output += 'Return: ' + (typeof result === 'object' ? JSON.stringify(result) : result);
+            }
+            
+            this.outputContent.textContent = output || 'Code executed (no output)';
+            
+        } catch (error) {
+            this.outputContent.textContent = 'Error: ' + error.message;
+            console.error("Execution error:", error);
+        }
+    }
+
+    clearOutput() {
+        this.outputContent.textContent = '';
+    }
+
+    async safeAIEdit(retries = 3) {
+        if (this.isProcessing) {
+            this.toastManager.show("Already processing a request", 'error');
+            return;
+        }
+        
+        const validated = this.validateInputs();
+        if (!validated) return;
+        
+        const { funcName, instruction } = validated;
+        this.isProcessing = true;
+        this.elements.applyButton.disabled = true;
+        this.elements.applyButton.textContent = "Processing...";
+        this.elements.applyButton.classList.add('loading');
+        
+        const code = this.editor.getValue();
+        
+        for (let attempt = 1; attempt <= retries; attempt++) {
+            try {
+                this.toastManager.show(`Attempt ${attempt}/${retries}: Processing...`);
+                
+                // Step 1: Extract function
+                const funcCode = await this.extractFunction(funcName, code);
+                
+                // Step 2: Request AI edit
+                const editResp = await this.requestAIEdit(funcCode, instruction);
+                
+                // Step 3: Validate JavaScript syntax
+                if (this.validateJavaScript(editResp)) {
+                    this.showPreviewModal(funcCode, editResp);
+                    this.elements.applyButton.disabled = false;
+                    this.elements.applyButton.textContent = "Apply AI Edit";
+                    this.elements.applyButton.classList.remove('loading');
+                    return;
+                } else {
+                    throw new Error("AI produced invalid JavaScript syntax");
+                }
+            } catch (err) {
+                console.error(`Attempt ${attempt} failed:`, err);
+                
+                if (attempt === retries) {
+                    this.toastManager.show("AI failed to produce valid code after all retries.", 'error');
+                    this.resetProcessingState();
+                } else {
+                    this.toastManager.show(`Attempt ${attempt} failed: ${err.message}`, 'error');
+                    // Wait a bit before retrying
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                }
+            }
+        }
+    }
+}
+
+// Initialize the application when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+    new AIEditorApp();
+});
+</script>
+</body>
+</html>
